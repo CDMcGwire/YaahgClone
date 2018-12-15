@@ -1,0 +1,14 @@
+stat = "strength" | "str" | "toughness" | "tuf" | "dexterity" | "dex" | "perception" | "per" | "magic" | "mag" | "knowledge" | "kno" | "charisma" | "cha" | "swagger" | "madlad" | "willpower" | "wil" | "lethality" | "let" | "money" | "dough";
+number = "[0-9]"+;
+compare_op = ">" | "<" | "!=" | "=";
+stat_exp = stat compare_op number
+
+trait = "\"[a-zA-Z0-9 '-]+\"";
+trait_exp = ("has trait" | "has not trait") trait;
+
+bool_op = "and" | "or";
+character_exp = trait_exp | stat_exp
+character_con = character_exp (bool_op character_exp)* | "(" character_con ")"
+
+expression = "character" character_con | ("session" | "storyboard") trait_exp
+condition = expression (bool_op expression)* | "(" condition ")"

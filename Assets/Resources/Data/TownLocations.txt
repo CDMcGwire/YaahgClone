@@ -1,0 +1,24 @@
+Tavern
+	Have some drinks
+	Sleep early
+	Perform for the patrons
+Woods
+	Hunt for food
+	Sharpen your "edge"
+	Scout the area
+Market
+	Buy weapons and armor
+	Buy medicine
+	Look for maps
+Field
+	Train for combat
+	Meditate
+	Duel for a Lady's honor
+Royal Court
+	Visit the Arcane Library
+	Mingle for information
+	Do paperwork for money
+Back Alley
+	Perform vigilante work
+	Purchase Blackmarket goods
+	Hire Help
