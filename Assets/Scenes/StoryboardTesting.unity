@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -119,6 +119,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1814827095312414, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
+      propertyPath: m_Name
+      value: John Doe
+      objectReference: {fileID: 0}
     - target: {fileID: 114253844384367626, guid: 59f43f32c7e30694eafe0b2b39f2ea56,
         type: 3}
       propertyPath: playerNumber
@@ -253,10 +257,6 @@ PrefabInstance:
         type: 3}
       propertyPath: characterData.state.strength
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1814827095312414, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
-      propertyPath: m_Name
-      value: John Doe
       objectReference: {fileID: 0}
     - target: {fileID: 4413525634284170, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2079,6 +2079,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114287794936357320, guid: cd0179d62c9ff534f9047be55f259e92,
+        type: 3}
+      propertyPath: genericDeathStoryboard
+      value: 
+      objectReference: {fileID: 114781169257526358, guid: 9a10f422f1269be4d9a27b0602feb232,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd0179d62c9ff534f9047be55f259e92, type: 3}
 --- !u!1 &793458406
@@ -2938,6 +2944,11 @@ PrefabInstance:
       propertyPath: statChanges.Array.data[1].value
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114842935671586354, guid: 93c20af4ba3aa9d49939ab611b54c596,
+        type: 3}
+      propertyPath: defaultNext
+      value: 
+      objectReference: {fileID: 1648039174}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93c20af4ba3aa9d49939ab611b54c596, type: 3}
 --- !u!114 &1116762372 stripped
@@ -3475,6 +3486,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1814827095312414, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
+      propertyPath: m_Name
+      value: Gina Williams
+      objectReference: {fileID: 0}
     - target: {fileID: 114253844384367626, guid: 59f43f32c7e30694eafe0b2b39f2ea56,
         type: 3}
       propertyPath: onStatChange.m_PersistentCalls.m_Calls.Array.size
@@ -3640,10 +3655,6 @@ PrefabInstance:
       propertyPath: characterData.state.color.b
       value: 0.735849
       objectReference: {fileID: 0}
-    - target: {fileID: 1814827095312414, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
-      propertyPath: m_Name
-      value: Gina Williams
-      objectReference: {fileID: 0}
     - target: {fileID: 4413525634284170, guid: 59f43f32c7e30694eafe0b2b39f2ea56, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3694,6 +3705,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68af1a9f13b15fc46b28d222ef33286c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1648039174 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8448009082306712287, guid: 93c20af4ba3aa9d49939ab611b54c596,
+    type: 3}
+  m_PrefabInstance: {fileID: 1076940363}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23c137de22b250a4887a6ddd2470c295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1711738080

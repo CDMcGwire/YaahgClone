@@ -66,7 +66,10 @@ public class StatUpdater : MonoBehaviour {
 				var display = displays[change.stat];
 				var targetValue = current.originalState.GetStat(change.stat) + change.value;
 
-				if (change.stat == CharacterStat.MONEY) display.Set(targetValue);
+				if (change.stat == CharacterStat.MONEY) {
+					display.Set(targetValue);
+					current.changes.Remove(node);
+				}
 				else if (display.Value < targetValue) display.Increment();
 				else if (display.Value > targetValue) display.Decrement();
 				else current.changes.Remove(node);

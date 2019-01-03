@@ -396,13 +396,16 @@ MonoBehaviour:
   decisions:
   - OptionText: Test Option 1
     PlaybackOrder: 0
-    StoryboardPrefab: {fileID: 0}
+    StoryboardPrefab: {fileID: 114683627378037418, guid: 262c7c81e9809b0428afe4e1b67c5e85,
+      type: 3}
   - OptionText: Test Option 2
     PlaybackOrder: 2
-    StoryboardPrefab: {fileID: 0}
+    StoryboardPrefab: {fileID: 114955268673039266, guid: 697a3854af26eb74e8d7a7e04caa64ff,
+      type: 3}
   - OptionText: Test Option 3
     PlaybackOrder: 1
-    StoryboardPrefab: {fileID: 0}
+    StoryboardPrefab: {fileID: 114568475828020012, guid: 3543bb710efbacc468853ba97ed3ac3f,
+      type: 3}
   summaryStoryboard: {fileID: 0}
   decisionMenu: {fileID: 114158264251280786}
   playerPrompt: {fileID: 114048037472260080}
