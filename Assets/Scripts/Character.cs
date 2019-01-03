@@ -47,6 +47,7 @@ public class Character : MonoBehaviour {
 	}
 
 	public void Kill() {
+		Data.Alive = false;
 		Session.Traits.Add("Player Died");
 		OnDeath.Invoke(this, Data.GetLimitsReached());
 	}
@@ -121,6 +122,8 @@ public class CharacterData {
 	public int GetStat(CharacterStat stat) { return State.GetStat(stat); }
 	public void SetStat(CharacterStat stat, int value) { state.SetStat(stat, value); }
 	public void ChangeStat(StatChange statChange) { state.ChangeStat(statChange); }
+
+	public bool Alive { get { return state.alive; } set { state.alive = value; } }
 
 	public int PhysicalThreshold { get { return state.physicalThreshold; } set { state.physicalThreshold = value; } }
 	public int MentalThreshold { get { return state.mentalThreshold; } set { state.mentalThreshold = value; } }
@@ -235,6 +238,8 @@ public struct CharacterState {
 		SetStat(statChange.stat, value);
 	}
 
+	public bool alive;
+	
 	public int physicalThreshold;
 	public int mentalThreshold;
 	public int debtThreshold;

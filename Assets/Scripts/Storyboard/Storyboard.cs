@@ -20,7 +20,7 @@ public class Storyboard : MonoBehaviour {
 	[SerializeField]
 	private List<int> owningPlayers = new List<int>();
 	public List<int> OwningPlayers { get { return owningPlayers; } set { owningPlayers = value; } }
-	public List<Character> OwningCharacters { get { return CharacterManager.GetLivingPlayerCharacters(OwningPlayers); } }
+	public List<Character> OwningCharacters { get { return CharacterManager.GetPlayerCharacters(OwningPlayers); } }
 
 	[SerializeField]
 	private List<string> traits = new List<string>();
