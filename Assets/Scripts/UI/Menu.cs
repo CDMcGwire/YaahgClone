@@ -25,6 +25,19 @@ public class Menu : MonoBehaviour {
 	private bool destroyOnClose = false;
 	public bool DestroyOnClose { get { return destroyOnClose; } set { destroyOnClose = value; } }
 
+	[Space(12)]
+
+	/// <summary>Set to adjust the speed of the open and close animations.</summary>
+	[SerializeField]
+	private float initialAnimationSpeed = 1.5f;
+	public float AnimationSpeed {
+		get { return animator ? animator.GetFloat(animatorSpeedProperty) : 0; }
+		set { if (animator) animator.SetFloat(animatorSpeedProperty, value); }
+	}
+
+	[SerializeField]
+	private string animatorSpeedProperty = "Speed";
+
 	[SerializeField]
 	private string animatorTrigger = "Close";
 
@@ -38,10 +51,15 @@ public class Menu : MonoBehaviour {
 	}
 
 	private void OnEnable() {
+		AnimationSpeed = initialAnimationSpeed;
 		if (!animator) {
 			OnOpening.Invoke();
 			OnOpened.Invoke();
 		}
+	}
+
+	public void Open() {
+		gameObject.SetActive(true);
 	}
 
 	public void Close(float delayTime) {

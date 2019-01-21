@@ -66,7 +66,7 @@ public class StatDisplay : MonoBehaviour {
 	}
 
 	private void Update() {
-		timer += Time.deltaTime;
+		timer += Time.unscaledDeltaTime;
 		var normalizedTime = fadeTime <= 0 ? 1 : timer <= 0 ? 0 : timer / fadeTime;
 		Color = Color.Lerp(Color, originalColor, normalizedTime);
 

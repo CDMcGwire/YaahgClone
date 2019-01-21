@@ -59,4 +59,14 @@ public class TimerEvent : MonoBehaviour {
 			eventQueue.FillFrom(resetQueue); // Refill event queue from everything that can still fire
 		}
 	}
+
+	/// <summary>Fires of all remaining events immediately and pauses.</summary>
+	public void ShortCircuit() {
+		while (eventQueue.Count > 0) {
+			var next = eventQueue.Dequeue();
+			next.onTrigger.Invoke();
+			if (next.resetOnEnable) resetQueue.Enqueue(next);
+		}
+		paused = true;
+	}
 }

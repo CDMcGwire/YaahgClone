@@ -4,11 +4,12 @@
 AnimatorOverrideController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: DecisionPanelMenu
   m_Controller: {fileID: 9100000, guid: b702d4cf31ca4a645b35f26df7ce7d1d, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 9f95351c2958dd14a8f5dcc720e3c04d, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 6ad5c360786c34e418e2f0f39e3807b2, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 75109f65afce6a042ad557afbad17382, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 2a3e57554059bbc488acb4ad9a7fdb90, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9f95351c2958dd14a8f5dcc720e3c04d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6ad5c360786c34e418e2f0f39e3807b2, type: 2}

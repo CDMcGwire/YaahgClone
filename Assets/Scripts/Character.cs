@@ -17,7 +17,7 @@ public class Character : MonoBehaviour {
 
 	[SerializeField]
 	private CharacterData characterData;
-	public CharacterData Data { get { return characterData; } set { characterData = value; } }
+	public CharacterData Data { get { return characterData; } set { characterData = value; name = Data.Name; } }
 
 	[SerializeField]
 	private StatChangeEvent onStatChange = new StatChangeEvent();
@@ -26,6 +26,10 @@ public class Character : MonoBehaviour {
 	[SerializeField]
 	private DeathEvent onDeath = new DeathEvent();
 	public DeathEvent OnDeath { get { return onDeath; } }
+
+	/// <summary>Indicator of whether or not this character has officially "spawned".</summary>
+	public bool Spawned { get; private set; } = false;
+	public void SetSpawned() { Spawned = true; }
 
 	public void ChangeStat(CharacterStat stat, int value) {
 		ChangeStat(new StatChange(stat, value));
@@ -37,23 +41,28 @@ public class Character : MonoBehaviour {
 
 	public void ChangeStats(List<StatChange> statChanges) {
 		var originalState = Data.State;
-		foreach (var statChange in statChanges) {
-			Data.ChangeStat(statChange);
-		}
+		foreach (var statChange in statChanges) Data.ChangeStat(statChange);
 		OnStatChange.Invoke(originalState, statChanges);
 
 		var limits = Data.GetLimitsReached();
-		if (limits.Count > 0) OnDeath.Invoke(this, limits);
+		if (limits.Count > 0) {
+			Data.Alive = false;
+			OnDeath.Invoke(this, limits);
+		}
 	}
 
 	public void Kill() {
 		Data.Alive = false;
-		Session.Traits.Add("Player Died");
+		Session.AddTrait("Player Died");
 		OnDeath.Invoke(this, Data.GetLimitsReached());
 	}
 
 	private void OnValidate() {
 		name = Data.Name;
+	}
+
+	private void Start() {
+		Debug.Assert(playerNumber > -1, "Character has been initialized without an assigned player.");
 	}
 }
 
@@ -136,6 +145,8 @@ public class CharacterData {
 	public List<CharacterStat> GetLimitsReached() {
 		return state.GetLimitsReached();
 	}
+
+	public int Initiative { get { return Dexterity + Perception; } }
 }
 
 [Serializable]

@@ -11,6 +11,6 @@ public class BoardQueuer : MonoBehaviour {
 	/// <param name="players">A list of all players (by number) that should own the new board.</param>
 	/// <param name="storyboard">A GameObject with the Storyboard component.</param>
 	public void Queue(List<int> players, Storyboard storyboard) {
-		StoryboardQueue.Add(storyboard, players);
+		StoryboardQueue.Enqueue(storyboard, players);
 	}
 }

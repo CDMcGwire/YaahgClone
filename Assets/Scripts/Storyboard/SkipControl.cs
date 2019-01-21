@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>Allows players to skip past a panel by pressing the specified button.</summary>
 public class SkipControl : PanelControl {
 	[SerializeField]
 	private UnityEvent onSkip ;
@@ -49,6 +50,10 @@ public class SkipControl : PanelControl {
 				skipIndicators[controllerCode] = indicator;
 				indicator.gameObject.SetActive(false);
 			}
+		}
+		if (skipIndicators.Count < 1) {
+			Debug.LogWarning("Skip control initialized, but no indicators were created. Controller will be disabled.");
+			enabled = false;
 		}
 	}
 

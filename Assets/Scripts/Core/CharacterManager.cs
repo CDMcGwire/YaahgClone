@@ -28,7 +28,45 @@ public class CharacterManager : MonoBehaviour {
 
 	[SerializeField]
 	private List<Character> characters = new List<Character>();
+	/// <summary>Returns a list of all characters.</summary>
 	public static List<Character> Characters { get { return Instance.characters; } }
+	/// <summary>Creates a new list containing all currently living characters.</summary>
+	public static List<Character> LivingCharacters {
+		get {
+			var livingCharacters = new List<Character>();
+			foreach (var character in Characters) if (character.Data.Alive) livingCharacters.Add(character);
+			return livingCharacters;
+		}
+	}
+	/// <summary>Creates a new list containing all currently dead characters.</summary>
+	public static List<Character> DeadCharacters {
+		get {
+			var deadCharacters = new List<Character>();
+			foreach (var character in Characters) if (!character.Data.Alive) deadCharacters.Add(character);
+			return deadCharacters;
+		}
+	}
+
+	/// <summary>Convenience method to get a list of player numbers with living characters.</summary>
+	public static List<int> LivingPlayers {
+		get {
+			var players = new List<int>();
+			foreach (var character in Characters) {
+				if (character.Data.Alive) players.Add(character.PlayerNumber);
+			}
+			return players;
+		}
+	}
+	/// <summary>Convenience method to get a list of player numbers with dead characters.</summary>
+	public static List<int> DeadPlayers {
+		get {
+			var players = new List<int>();
+			foreach (var character in Characters) {
+				if (!character.Data.Alive) players.Add(character.PlayerNumber);
+			}
+			return players;
+		}
+	}
 
 	/// <summary>Retrieve a Character by player roster index. Makes no distinction on living or dead.</summary>
 	/// <param name="player">Roster index of the player to attempt to retrieve.</param>
@@ -90,24 +128,6 @@ public class CharacterManager : MonoBehaviour {
 		return characters;
 	}
 
-	/// <returns>Retrieve a set of player roster indexes where each corresponding player has a living character.</returns>
-	public static List<int> GetLivingPlayers() {
-		var players = new List<int>();
-		foreach (var character in Characters) {
-			if (character.Data.Alive) players.Add(character.PlayerNumber);
-		}
-		return players;
-	}
-
-	/// <returns>Retrieve a set of player roster indexes where each corresponding player has a dead character.</returns>
-	public static List<int> GetDeadPlayers() {
-		var players = new List<int>();
-		foreach (var character in Characters) {
-			if (!character.Data.Alive) players.Add(character.PlayerNumber);
-		}
-		return players;
-	}
-
 	/// <summary>Creates a Character game object from the given data and adds to the player roster.</summary>
 	/// <param name="player">Roster index to place the character into.</param>
 	/// <param name="characterData">Starting statistics to apply to the character.</param>
@@ -125,18 +145,34 @@ public class CharacterManager : MonoBehaviour {
 		}
 
 		var character = Instantiate(Instance.characterPrefab, Instance.transform);
+		character.PlayerNumber = player;
 		character.Data = characterData;
 
 		if (player >= Instance.characters.Count) Instance.characters.Insert(player, character);
 		else Instance.characters[player] = character;
-		
+
+		character.SetSpawned();
 		OnPlayerSpawned.Invoke(character);
 		return character;
 	}
 
 	private void Start() {
+		if (Instance != this) {
+			Destroy(gameObject);
+			return;
+		}
+
 		foreach (var character in characters) {
+			character.SetSpawned();
 			OnPlayerSpawned.Invoke(character);
 		}
+	}
+
+	/// <summary>Clear out the characters to prepare for next set.</summary>
+	public static void Clear() {
+		foreach (var character in Characters) Destroy(character.gameObject);
+		Characters.Clear();
+		OnPlayerSpawned.RemoveAllListeners();
+		OnPlayerRemoved.RemoveAllListeners();
 	}
 }

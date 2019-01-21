@@ -37,7 +37,10 @@ public class InputManager : MonoBehaviour {
 	}
 
 	public static string GetPlayerControllerCode(int player) {
-		if (player < 0 || player >= Instance.playerRoster.Count) return null;
+		if (player < 0 || player >= Instance.playerRoster.Count) {
+			Debug.LogWarning("Tried to get a controller code for player " + player + " but no code has been assigned.");
+			return null;
+		}
 		return Instance.playerRoster[player];
 	}
 
@@ -64,13 +67,10 @@ public class InputManager : MonoBehaviour {
 	public static int ActivePlayer { get { return Instance.activePlayer; } private set { Instance.activePlayer = value; } }
 	public static string ActiveController { get { return Instance.playerRoster[ActivePlayer]; } }
 
-	private static void SetPlayerControllerModule(int controllerModuleIndex, int player) {
-		if (controllerModuleIndex < 0
-			|| player < 0
-			|| controllerModuleIndex >= Instance.availableInputModules.Count
-		) return;
+	private static void SetPlayerControllerModule(int moduleIndex, int player) {
+		if (moduleIndex < 0 || player < 0 || moduleIndex >= Instance.availableInputModules.Count) return;
 
-		var inputModule = Instance.availableInputModules[controllerModuleIndex];
+		var inputModule = Instance.availableInputModules[moduleIndex];
 		if (player >= Instance.playerInputModules.Count) Instance.playerInputModules.Insert(player, inputModule);
 		else Instance.playerInputModules[player] = inputModule;
 
@@ -88,16 +88,26 @@ public class InputManager : MonoBehaviour {
 		Instance.playerInputModules[player] = null;
 	}
 
+	/// <summary>Given a player index, get the corresponding input module and activate it.</summary>
+	/// <param name="player">Roster index of the player.</param>
 	public static void SetActivePlayer(int player) {
 		if (player >= Instance.playerInputModules.Count) return;
 		if (player >= 0 && !Instance.playerInputModules[player]) return;
+		
+		// Try to find target module
+		var activeModule = player >= 0 ? Instance.playerInputModules[player] 
+			: Instance.availableInputModules.Count > 0 ? Instance.availableInputModules[0] : null;
 
-		if (ActivePlayer >= 0) Instance.playerInputModules[ActivePlayer].enabled = false;
-		else if (Instance.availableInputModules.Count > 0) Instance.availableInputModules[0].enabled = false;
-		ActivePlayer = player;
-		//EventSystem.current.UpdateModules(); I put this here put can't possibly imagine why, so I'll leave it commented until I remember
-		if (ActivePlayer >= 0) Instance.playerInputModules[ActivePlayer].enabled = true;
-		else if (Instance.availableInputModules.Count > 0) Instance.availableInputModules[0].enabled = true;
+		if (activeModule != null) {
+			// Disable previous module
+			if (ActivePlayer >= 0) Instance.playerInputModules[ActivePlayer].enabled = false;
+			else if (Instance.availableInputModules.Count > 0) Instance.availableInputModules[0].enabled = false;
+			// Set new player as active
+			ActivePlayer = player;
+			// Force the module to activate
+			activeModule.enabled = true;
+			activeModule.forceModuleActive = true;
+		}
 	}
 
 	public static bool GetButtonFromAny(string button) {
@@ -219,6 +229,10 @@ public class InputManager : MonoBehaviour {
 	}
 
 	private void Start() {
+		if (Instance != this) {
+			Destroy(gameObject);
+			return;
+		}
 		foreach (var inputModule in availableInputModules) inputModule.enabled = false;
 		SetActivePlayer(playerInputModules.FirstNonNullIndex());
 	}

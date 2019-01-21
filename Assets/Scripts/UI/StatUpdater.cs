@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Singleton component which manages and provides an interface for the Stat Updater UI.
+/// </summary>
 public class StatUpdater : MonoBehaviour {
 	private static StatUpdater instance;
 	public static StatUpdater Instance {
@@ -16,11 +20,16 @@ public class StatUpdater : MonoBehaviour {
 
 	[SerializeField]
 	private Text nameDisplay;
+
 	[SerializeField]
 	private Text titleDisplay;
 
 	[SerializeField]
-	private float updatesPerSecond = 3;
+	private float updatesPerSecond = 3f;
+
+	/// <summary>How long the menu should hold open after finishing its update.</summary>
+	[SerializeField]
+	private float holdTime = 1f;
 
 	private Dictionary<CharacterStat, StatDisplay> displays = new Dictionary<CharacterStat, StatDisplay>();
 
@@ -29,6 +38,9 @@ public class StatUpdater : MonoBehaviour {
 
 	private float timer = 0f;
 	private bool CanUpdate { get { return updatesPerSecond > 0 ? timer >= 1 / updatesPerSecond : true; } }
+
+	/// <summary>Key to use for pause requests</summary>
+	private readonly string pauseKey = "StatUpdater";
 
 	private void OnValidate() {
 		Debug.Assert(menu, $"State updater '{name}' is missing a Menu component reference");
@@ -42,7 +54,15 @@ public class StatUpdater : MonoBehaviour {
 	}
 
 	private void Start() {
-		foreach (var character in CharacterManager.Characters) character.OnStatChange.AddListener(EnqueueUpdate);
+		if (Instance != this) {
+			Destroy(gameObject);
+			return;
+		}
+
+		// Check for pre-spawned characters
+		foreach (var character in CharacterManager.Characters) {
+			if (character.Spawned) character.OnStatChange.AddListener(EnqueueUpdate);
+		}
 		// If a new character is spawned, listen to that one as well.
 		CharacterManager.OnPlayerSpawned.AddListener(character => character.OnStatChange.AddListener(EnqueueUpdate));
 
@@ -54,7 +74,7 @@ public class StatUpdater : MonoBehaviour {
 	private void Update() {
 		if (updateQueue.Count < 1) return;
 
-		timer += Time.deltaTime;
+		timer += Time.unscaledDeltaTime;
 		if (CanUpdate) {
 			var current = updateQueue.Peek();
 
@@ -78,17 +98,17 @@ public class StatUpdater : MonoBehaviour {
 			}
 			if (current.changes.Count < 1) {
 				updateQueue.Dequeue();
-				if (updateQueue.Count < 1) menu.Close();
-				else menu.Cycle();
+				StartCoroutine(Close(holdTime));
+				enabled = false;
 			}
-
 			timer = 0;
 		}
 	}
 
 	public void EnqueueUpdate(CharacterState originalState, List<StatChange> changes) {
 		updateQueue.Enqueue(new UpdateInfo(originalState, changes));
-		menu.gameObject.SetActive(true);
+		menu.Open();
+		Playback.RequestPause(pauseKey);
 	}
 
 	public void RefreshDisplay() {
@@ -97,12 +117,26 @@ public class StatUpdater : MonoBehaviour {
 		var character = updateQueue.Peek().originalState;
 		nameDisplay.text = character.name;
 		nameDisplay.color = character.color;
-		titleDisplay.text = character.title;
+		titleDisplay.text = "the " + character.title;
 		titleDisplay.color = character.color;
 
 		foreach (var entry in displays) entry.Value.Value = character.GetStat(entry.Key);
 	}
 
+	/// <summary>Coroutine to close the Stat Updater after some amount of unscaled time.</summary>
+	/// <param name="time">Time to wait.</param>
+	/// <returns>IEnumerator for the Coroutine.</returns>
+	private IEnumerator Close(float time) {
+		yield return new WaitForSecondsRealtime(time);
+
+		if (updateQueue.Count < 1) {
+			Playback.ReleasePause(pauseKey);
+			menu.Close();
+		}
+		else menu.Cycle();
+	}
+
+	/// <summary>Struct to track infomation about what stats should display updates.</summary>
 	private struct UpdateInfo {
 		public readonly CharacterState originalState;
 		public readonly LinkedList<StatChange> changes;

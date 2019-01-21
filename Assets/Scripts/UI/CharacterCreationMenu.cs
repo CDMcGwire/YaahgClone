@@ -33,6 +33,11 @@ public class CharacterCreationMenu : MonoBehaviour {
 	private Button doneButton;
 	public Button DoneButton { get { return doneButton; } }
 
+	[Space(12)]
+	[Tooltip("Reference to TitleGenerator scriptable object.")]
+	[SerializeField]
+	private TitleGenerator titleGenerator;
+
 	private CharacterData characterData = new CharacterData();
 	private bool wasColorSelected = false;
 
@@ -47,6 +52,9 @@ public class CharacterCreationMenu : MonoBehaviour {
 		Debug.Assert(colorSelector, "Color Selector not configured for " + name);
 		Debug.Assert(doneButton, "Done Button not configured for " + name);
 
+		characterData.Alive = true;
+		SetDefaultStats(characterData);
+
 		// Setup name input
 		nameInput.onEndEdit.AddListener(input => {
 			characterData.Name = input != null ? input.Trim() : "";
@@ -56,7 +64,7 @@ public class CharacterCreationMenu : MonoBehaviour {
 		// Setup title selector
 		foreach (var toggle in titleSelector.GetComponentsInChildren<Toggle>()) {
 			var textHolder = toggle.GetComponentInChildren<Text>();
-			var title = TitleGenerator.Next;
+			var title = titleGenerator.Next;
 			textHolder.text = "The " + title;
 
 			toggle.onValueChanged.AddListener(isOn => {
@@ -93,5 +101,22 @@ public class CharacterCreationMenu : MonoBehaviour {
 			doneButton.interactable = false;
 		}
 		else doneButton.interactable = true;
+	}
+
+	private static void SetDefaultStats(CharacterData data) {
+		data.Strength = 3;
+		data.Toughness = 3;
+		data.Dexterity = 3;
+		data.Perception = 3;
+		data.Knowledge = 3;
+		data.Magic = 3;
+		data.Charisma = 3;
+		data.Willpower = 3;
+		data.Lethality = 3;
+		data.Money = 300;
+
+		data.PhysicalThreshold = -3;
+		data.MentalThreshold = -3;
+		data.DebtThreshold = -3;
 	}
 }

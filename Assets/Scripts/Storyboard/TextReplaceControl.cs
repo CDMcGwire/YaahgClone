@@ -3,6 +3,9 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Performs string substitutions on a text component to allow for writing in dynamic data.
+/// </summary>
 public class TextReplaceControl : PanelControl {
 	[SerializeField]
 	private Text textElement;

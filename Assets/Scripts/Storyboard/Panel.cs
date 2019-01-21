@@ -1,12 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
+[Serializable]
 public class PanelEndEvent : UnityEvent<Panel> { }
 
 [RequireComponent(typeof(Menu))]
 [RequireComponent(typeof(ConditionalPath))]
 public class Panel : MonoBehaviour {
 	public Storyboard Board { get; private set; }
+
+	/// <summary>Signals to the storyboard whether or not the owner information display should be enabled while active.</summary>
+	[SerializeField]
+	private bool showOwnerInfo = true;
+	public bool ShowOwnerInfo { get { return showOwnerInfo; } }
 
 	[SerializeField]
 	private PanelEndEvent onComplete = new PanelEndEvent();

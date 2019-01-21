@@ -48,6 +48,11 @@ public class MenuGroup : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Closes the active menu without switching to a new one.</summary>
+	public void CloseAll() {
+		ChangeMenu(null);
+	}
+
 	public void RefreshMenuList() {
 		// Clear list of invalid menus
 		var deadKeys = new List<string>();
