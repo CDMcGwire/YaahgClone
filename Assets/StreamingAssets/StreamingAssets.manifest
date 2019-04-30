@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 414997884
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: backdrop/test
+      Dependencies: {}
+    Info_1:
+      Name: backdrop/prep
+      Dependencies: {}
+    Info_2:
+      Name: storyboard/test
+      Dependencies: {}

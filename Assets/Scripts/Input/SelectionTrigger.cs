@@ -2,6 +2,9 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Component to give UI Buttons a handler for selection events.
+/// </summary>
 public class SelectionTrigger : MonoBehaviour, ISelectHandler, IDeselectHandler, IUpdateSelectedHandler {
 	public UnityEvent onSelect = new UnityEvent();
 	public UnityEvent onDeselect = new UnityEvent();

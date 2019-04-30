@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Fires off events at given time intervals.
+/// </summary>
 public class TimerEvent : MonoBehaviour {
+	[Tooltip("Whether or not to calculate based on actual time passed, rather than scaled game time.")]
+	[SerializeField]
+	private bool unscaledTime = true;
+
+	[Tooltip("Whether or not to allow events to fire when game time is <= 0. Will fire off events retroactively if using realtime.")]
+	[SerializeField]
+	private bool ignoreGametime = false;
+
+	[Tooltip("Used to pause this timer individually.")]
 	[SerializeField]
 	private bool paused = false;
-	public bool Paused { get { return paused; } set { paused = value; } }
+	public bool Paused { get => paused; set => paused = value; }
 
 	[Serializable]
 	private struct TimeEvent {
@@ -29,16 +41,19 @@ public class TimerEvent : MonoBehaviour {
 
 	private void Update() {
 		if (!paused) {
-			currentTime += Time.deltaTime;
-			
-			// Trigger all events that have reached their time, while there are more in the queue
-			while (eventQueue.Count > 0 && currentTime > eventQueue.Peek().triggerTime) {
-				var timeEvent = eventQueue.Dequeue();
-				timeEvent.onTrigger.Invoke();
-				// If the event can fire again on Reset, add it to the Reset queue
-				if (timeEvent.resetOnEnable) resetQueue.Enqueue(timeEvent);
-				// If the queue is empty, pause the timer
-				if (eventQueue.Count < 1) paused = true;
+			currentTime += unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+
+			// If ignoring Gametime pause or Gametime isn't even paused.
+			if (ignoreGametime || !Playback.Paused) {
+				// Trigger all events that have reached their time, while there are more in the queue
+				while (eventQueue.Count > 0 && currentTime > eventQueue.Peek().triggerTime) {
+					var timeEvent = eventQueue.Dequeue();
+					timeEvent.onTrigger.Invoke();
+					// If the event can fire again on Reset, add it to the Reset queue
+					if (timeEvent.resetOnEnable) resetQueue.Enqueue(timeEvent);
+					// If the queue is empty, pause the timer
+					if (eventQueue.Count < 1) paused = true;
+				}
 			}
 		}
 	}

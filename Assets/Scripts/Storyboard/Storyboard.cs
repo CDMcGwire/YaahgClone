@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,61 +7,43 @@ using UnityEngine.Events;
 /// This class represents a self-contained, playable section of gameplay.
 /// </summary>
 [RequireComponent(typeof(Menu))]
-[RequireComponent(typeof(MenuGroup))]
-[RequireComponent(typeof(Path))]
-public class Storyboard : MonoBehaviour {
+public abstract class Storyboard : MonoBehaviour {
 	public UnityEvent OnBoardFinished = new UnityEvent();
 
-	/// <summary>If true, the storyboard should not be repeated in a session.</summary>
+	[Tooltip("Identifier string for determining matching storyboards.")]
+	[SerializeField]
+	private string id = "Default";
+	public string ID { get => id; set => id = value; }
+
+	[Tooltip("If true, the storyboard should not be repeated in a session.")]
 	[SerializeField]
 	private bool unique = true;
-	public bool Unique { get { return unique; } }
+	public bool Unique => unique;
 
-	/// <summary>Reference to this storyboard's menu component.</summary>
-	[SerializeField]
-	private Menu menu;
-	public Menu Menu { get { return menu; } }
-
-	/// <summary>Menu Group containing all of the panels in this storyboard.</summary>
-	[SerializeField]
-	private MenuGroup panelGroup;
-
-	/// <summary>Initial path node that determines the start of the storyboard.</summary>
-	[SerializeField]
-	private Path initialPath;
-
-	/// <summary>The list of players that this storyboard pertains to.</summary>
+	[Tooltip("The list of players that this storyboard pertains to.")]
 	[SerializeField]
 	private List<int> owningPlayers = new List<int>();
-	public List<int> OwningPlayers { get { return owningPlayers; } set { owningPlayers = value; } }
+	public List<int> OwningPlayers { get => owningPlayers; set => owningPlayers = value; }
 
 	/// <summary>Shorthand property to retrieve the Characters of the owning players.</summary>
-	public List<Character> OwningCharacters { get { return CharacterManager.GetPlayerCharacters(OwningPlayers); } }
+	public List<Character> OwningCharacters => CharacterManager.GetPlayerCharacters(OwningPlayers);
 
-	/// <summary>Storyboard persistent data for use in evaluating paths.</summary>
+	[Tooltip("Remove players from the list of owners if they die.")]
 	[SerializeField]
-	private List<string> traits = new List<string>();
-	public List<string> Traits { get { return traits; } }
+	private bool removeDeadPlayers = true;
+	public bool RemoveDeadPlayers { get => removeDeadPlayers; set => removeDeadPlayers = value; }
 
 	[Space(12)]
 
-	/// <summary>Menu Group containing all of the panels in this storyboard. (optional)</summary>
+	[Tooltip("Reference to this storyboard's menu component.")]
+	[SerializeField]
+	private Menu menu;
+	public Menu Menu => menu;
+
+	[Tooltip("Menu Group containing all of the panels in this storyboard. (optional)")]
 	[SerializeField]
 	private OwnerInfoPanel ownerInfoMenu;
-
-	/// <summary>Store some information on the storyboard's Trait list.</summary>
-	/// <param name="trait">The name of the trait to store.</param>
-	public void AddTrait(string trait) {
-		if (Traits.Contains(trait)) return;
-		Traits.Add(trait);
-	}
-
-	/// <summary>Check if a trait is present on this storyboard.</summary>
-	/// <param name="trait">The trait to look for.</param>
-	/// <returns>True if found.</returns>
-	public bool HasTrait(string trait) {
-		return Traits.Contains(trait);
-	}
+	public OwnerInfoPanel OwnerInfoMenu => ownerInfoMenu;
 
 	/// <summary>
 	/// A package containing references to the storyboard's owning characters and traits, 
@@ -68,47 +51,90 @@ public class Storyboard : MonoBehaviour {
 	/// </summary>
 	public GameData GameData { get; private set; }
 
-	private void OnValidate() {
+	/// <summary>
+	/// Retrieves the next panel by whatever logic the child class implements.
+	/// Should return null if no more panels are available.
+	/// </summary>
+	protected abstract Panel NextPanel();
+
+	/// <summary>
+	/// Get all uique panel components used by the Storyboard. Implemented by the child
+	/// class, as they may manage their panels differently.
+	/// </summary>
+	protected abstract List<Panel> Panels { get; }
+
+	/// <summary>Check for whether or not first time setup has run on the storyboard.</summary>
+	private bool alreadyRun = false;
+
+	protected void OnValidate() {
 		if (menu == null) menu = GetComponent<Menu>();
-		if (panelGroup == null) panelGroup = GetComponent<MenuGroup>();
-		if (initialPath == null) initialPath = GetComponent<ConditionalPath>();
+	}
+	
+	/// <summary>Cleanup on disable.</summary>
+	private void OnDisable() {
+		foreach (var character in OwningCharacters) character.OnDeath.RemoveListener(HandleCharacterDeath);
 	}
 
-	/// <summary>Prep the storyboard for playback.</summary>
-	public void Initialize() {
-		menu.OnClosed.AddListener(OnBoardFinished.Invoke);
-
+	/// <summary>Play the storyboard.</summary>
+	public void Play() {
+		if (!alreadyRun) {
+			Menu.OnClosed.AddListener(OnBoardFinished.Invoke);
+			alreadyRun = true;
+		}
 		// If no characters own the storyboard, it will default to all living players.
 		if (OwningPlayers.Count < 1) OwningPlayers = CharacterManager.LivingPlayers;
 
-		GameData = new GameData(OwningCharacters, Traits, Session.Traits);
+		GameData = new GameData(OwningCharacters, Session.EncounterTraits, Session.Traits);
 		foreach (var character in OwningCharacters) character.OnDeath.AddListener(HandleCharacterDeath);
 
-		if (ownerInfoMenu) ownerInfoMenu.Initialize(GameData);
-		SetupNextPanel(initialPath.GetNextPanel(GameData));
+		// Setup panel flow
+		foreach (var panel in Panels) {
+			panel.OnEnd.RemoveAllListeners();
+			panel.OnEnd.AddListener(StartNextPanel);
+			panel.gameObject.SetActive(false);
+		}
+		// Perform any additional setup that subclasses may require
+		AdditionalSetup();
+		// Begin Playback
+		Menu.Open();
+		StartNextPanel();
 	}
 
-	/// <summary>If the next panel is valid, initialize and enable it, otherwise finish the board.</summary>
-	/// <param name="panel">The next panel to display or null to close the storyboard.</param>
-	private void SetupNextPanel(Panel panel) {
-		if (panel == null) {
-			menu.Close();
-			return;
-		}
-		panel.Initialize(this);
-		panel.OnComplete.AddListener(nextPanel => SetupNextPanel(nextPanel));
-		panelGroup.ChangeMenu(panel.Menu);
+	/// <summary>Trigger the end procedure for the storyboard.</summary>
+	public void End() {
+		foreach (var character in OwningCharacters) character.OnDeath.RemoveListener(HandleCharacterDeath);
+		Menu.Close();
+	}
 
-		if (ownerInfoMenu) {
-			if (panel.ShowOwnerInfo) ownerInfoMenu.Menu.Open();
-			else ownerInfoMenu.Menu.Close();
+	/// <summary>Override to give additional logic on first time setup.</summary>
+	protected virtual void AdditionalSetup() { }
+
+	/// <summary>If the next panel is valid, initialize and enable it, otherwise finish the board.</summary>
+	protected void StartNextPanel() => _ = StartCoroutine(DelayedPanelStart());
+
+	/// <summary>
+	/// PanelStart logic is handled as a coroutine to give the last panel a chance to finish all of its
+	/// Monobehaviour methods for the frame.
+	/// </summary>
+	/// <returns>A single frame Enumerator.</returns>
+	private IEnumerator DelayedPanelStart() {
+		yield return null;
+		var panel = NextPanel();
+		// No More panels. Close the storyboard.
+		if (panel == null) {
+			End();
+			yield break;
 		}
+		panel.Setup(this);
+		panel.Play();
 	}
 
 	/// <summary>Perform any actions necessary when a player dies on this storyboard, like setting traits.</summary>
 	/// <param name="character">Character that died.</param>
 	/// <param name="limits">Limits the character reached when they died.</param>
 	private void HandleCharacterDeath(Character character, List<CharacterStat> limits) {
-		foreach (var stat in limits) AddTrait(DeathTraits.From(stat));
+		foreach (var stat in limits) Session.AddEncounterTrait(DeathTraits.From(stat));
+		if (removeDeadPlayers) _ = owningPlayers.Remove(character.PlayerNumber);
+		character.OnDeath.RemoveListener(HandleCharacterDeath);
 	}
 }

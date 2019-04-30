@@ -1,0 +1,53 @@
+# Test storyboards
+
+>>
+^& property1=Some value
+^& property2=Another value
+
+& backdrop=backdrop/test/placeholder
+| First line of text
+| Second line of text
+| Third line of text
+| Fourth line of text kicked to the next panel
+
+| Explicitly started new panel.
+| Second line on new panel.
+
+& backdrop=backdrop/test/simple-background
+| Panel with a new background
+
+? Decision panel
+- 0 - Option 1 -< board02
+[Character has trait "Test"]
+- 1 - Conditional Option -< board03
+- 2 - Option 2 -< board04
+[Character has not trait "Test"]
+- 3 - Inverse Conditional Option -< board05
+
+>> board02
+| This board will branch without a decision
+- 1 -< board03
+[Character has trait "Test Branch"]
+- 2 -< board04
+[Character str > 4]
+-0-<board05
+
+>>board03
+|This is board03
+
+>>board04
+|This is board04
+: str+4, dex-2, mag=10
+: +"Reached board04"
+
+>> board05
+| This is board05
+
+: session+"Reached board05"
+
+
+
+
+
+: encounter+"Added an encounter trait"
+

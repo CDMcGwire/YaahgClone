@@ -21,7 +21,7 @@ public class InputManager : MonoBehaviour {
 
 	[SerializeField]
 	private bool paused = false;
-	public static bool Paused { get { return Instance.paused; } set { Instance.paused = value; } }
+	public static bool Paused { get => Instance.paused; set => Instance.paused = value; }
 
 	[SerializeField]
 	private List<string> playerRoster = new List<string>();
@@ -44,16 +44,16 @@ public class InputManager : MonoBehaviour {
 		return Instance.playerRoster[player];
 	}
 
-	public static HashSet<string> ActiveControllers { get { return new HashSet<string>(Instance.playerRoster); } }
+	public static HashSet<string> ActiveControllers => new HashSet<string>(Instance.playerRoster);
 
-	public static int PlayerCount { get { return Instance.usedSlots; } }
+	public static int PlayerCount => Instance.usedSlots;
 
 	[SerializeField]
 	private PlayerJoinEvent onPlayerJoin = new PlayerJoinEvent();
-	public static PlayerJoinEvent OnPlayerJoin { get { return Instance.onPlayerJoin; } }
+	public static PlayerJoinEvent OnPlayerJoin => Instance.onPlayerJoin;
 	[SerializeField]
 	private PlayerJoinEvent onPlayerLeft = new PlayerJoinEvent();
-	public static PlayerJoinEvent OnPlayerLeft { get { return Instance.onPlayerLeft; } }
+	public static PlayerJoinEvent OnPlayerLeft => Instance.onPlayerLeft;
 
 	/// <summary>
 	/// This field is assumed to be in the same order as the ControllerCode enum
@@ -64,8 +64,8 @@ public class InputManager : MonoBehaviour {
 	private List<StandaloneInputModule> playerInputModules = new List<StandaloneInputModule>();
 
 	private int activePlayer = -1;
-	public static int ActivePlayer { get { return Instance.activePlayer; } private set { Instance.activePlayer = value; } }
-	public static string ActiveController { get { return Instance.playerRoster[ActivePlayer]; } }
+	public static int ActivePlayer { get => Instance.activePlayer; private set => Instance.activePlayer = value; }
+	public static string ActiveController => Instance.playerRoster[ActivePlayer];
 
 	private static void SetPlayerControllerModule(int moduleIndex, int player) {
 		if (moduleIndex < 0 || player < 0 || moduleIndex >= Instance.availableInputModules.Count) return;
@@ -219,14 +219,12 @@ public class InputManager : MonoBehaviour {
 		for (var i = 0; i < Instance.playerRoster.Count; i++) {
 			if (!string.IsNullOrEmpty(Instance.playerRoster[i])) {
 				Debug.Log("Removing Player " + i);
-				RemovePlayer(i);
+				_ = RemovePlayer(i);
 			}
 		}
 	}
 
-	private void Awake() {
-		DontDestroyOnLoad(gameObject);
-	}
+	private void Awake() => DontDestroyOnLoad(gameObject);
 
 	private void Start() {
 		if (Instance != this) {
@@ -260,9 +258,7 @@ public class InputManager : MonoBehaviour {
 		}
 	}
 
-	public static string GetControllerName(string code) {
-		return GetControllerName((ControllerCode)Enum.Parse(typeof(ControllerCode), code, true));
-	}
+	public static string GetControllerName(string code) => GetControllerName((ControllerCode)Enum.Parse(typeof(ControllerCode), code, true));
 
 	public enum ControllerCode {
 		KB,

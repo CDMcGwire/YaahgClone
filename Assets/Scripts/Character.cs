@@ -13,31 +13,27 @@ public class DeathEvent : UnityEvent<Character, List<CharacterStat>> { }
 public class Character : MonoBehaviour {
 	[SerializeField]
 	private int playerNumber = -1;
-	public int PlayerNumber { get { return playerNumber; } set { playerNumber = value; } }
+	public int PlayerNumber { get => playerNumber; set => playerNumber = value; }
 
 	[SerializeField]
 	private CharacterData characterData;
-	public CharacterData Data { get { return characterData; } set { characterData = value; name = Data.Name; } }
+	public CharacterData Data { get => characterData; set => characterData = value; }
 
 	[SerializeField]
 	private StatChangeEvent onStatChange = new StatChangeEvent();
-	public StatChangeEvent OnStatChange { get { return onStatChange; } }
+	public StatChangeEvent OnStatChange => onStatChange;
 
 	[SerializeField]
 	private DeathEvent onDeath = new DeathEvent();
-	public DeathEvent OnDeath { get { return onDeath; } }
+	public DeathEvent OnDeath => onDeath;
 
 	/// <summary>Indicator of whether or not this character has officially "spawned".</summary>
 	public bool Spawned { get; private set; } = false;
-	public void SetSpawned() { Spawned = true; }
+	public void SetSpawned() => Spawned = true;
 
-	public void ChangeStat(CharacterStat stat, int value) {
-		ChangeStat(new StatChange(stat, value));
-	}
+	public void ChangeStat(CharacterStat stat, int value) => ChangeStat(new StatChange(stat, value));
 
-	public void ChangeStat(StatChange statChange) {
-		ChangeStats(new List<StatChange> { statChange });
-	}
+	public void ChangeStat(StatChange statChange) => ChangeStats(new List<StatChange> { statChange });
 
 	public void ChangeStats(List<StatChange> statChanges) {
 		var originalState = Data.State;
@@ -57,30 +53,29 @@ public class Character : MonoBehaviour {
 		OnDeath.Invoke(this, Data.GetLimitsReached());
 	}
 
-	private void OnValidate() {
-		name = Data.Name;
-	}
+	public void OnValidate() => name = Data.Name;
 
-	private void Start() {
-		Debug.Assert(playerNumber > -1, "Character has been initialized without an assigned player.");
-	}
+	public void Start() => Debug.Assert(playerNumber > -1, "Character has been initialized without an assigned player.");
 }
 
 [Serializable]
 public class CharacterData {
 	[SerializeField]
 	private CharacterState state;
-	public CharacterState State { get { return state; } }
+	public CharacterState State => state;
 
 	[SerializeField]
 	private List<string> traits = new List<string>(); // Unity Inspector has horrible hash set support
+	public List<string> Traits => traits;
 
-	public void AddTrait(string trait) { traits.Add(trait); }
-	public bool RemoveTrait(string trait) { return traits.Remove(trait); }
-	public bool HasTrait(string trait) { return traits.Contains(trait); }
+	/// <summary>Adds the trait to the character, if not already present.</summary>
+	/// <param name="trait">The trait identifier.</param>
+	public void AddTrait(string trait) {
+		if (!traits.Contains(trait)) traits.Add(trait);
+	}
 
 	public string Name {
-		get { return state.name; }
+		get => state.name;
 		set {
 			if (string.IsNullOrWhiteSpace(value)) {
 				state.lastname = state.firstname = state.name = "";
@@ -113,40 +108,43 @@ public class CharacterData {
 		}
 	}
 
-	public string Title { get { return state.title ?? ""; } set { state.title = value; } }
-	public Color Color { get { return state.color; } set { state.color = value; } }
+	public string Title { get => state.title ?? ""; set => state.title = value; }
+	public Color Color { get => state.color; set => state.color = value; }
 
-	public int Strength { get { return state.strength; } set { state.strength = value; } }
-	public int Toughness { get { return state.toughness; } set { state.toughness = value; } }
-	public int Dexterity { get { return state.dexterity; } set { state.dexterity = value; } }
-	public int Perception { get { return state.perception; } set { state.perception = value; } }
-	public int Magic { get { return state.magic; } set { state.magic = value; } }
-	public int Knowledge { get { return state.knowledge; } set { state.knowledge = value; } }
-	public int Charisma { get { return state.charisma; } set { state.charisma = value; } }
-	public int Willpower { get { return state.willpower; } set { state.willpower = value; } }
-	public int Lethality { get { return state.lethality; } set { state.lethality = value; } }
+	public int Strength { get => state.strength; set => state.strength = value; }
+	public int Toughness { get => state.toughness; set => state.toughness = value; }
+	public int Dexterity { get => state.dexterity; set => state.dexterity = value; }
+	public int Perception { get => state.perception; set => state.perception = value; }
+	public int Magic { get => state.magic; set => state.magic = value; }
+	public int Knowledge { get => state.knowledge; set => state.knowledge = value; }
+	public int Charisma { get => state.charisma; set => state.charisma = value; }
+	public int Willpower { get => state.willpower; set => state.willpower = value; }
+	public int Lethality { get => state.lethality; set => state.lethality = value; }
 
-	public int Money { get { return state.money; } set { state.money = value; } }
+	public int Money { get => state.money; set => state.money = value; }
 
-	public int GetStat(CharacterStat stat) { return State.GetStat(stat); }
-	public void SetStat(CharacterStat stat, int value) { state.SetStat(stat, value); }
-	public void ChangeStat(StatChange statChange) { state.ChangeStat(statChange); }
+	public int GetStat(CharacterStat stat) => State.GetStat(stat);
+	public void SetStat(CharacterStat stat, int value) => state.SetStat(stat, value);
+	public void ChangeStat(StatChange statChange) => state.ChangeStat(statChange);
 
-	public bool Alive { get { return state.alive; } set { state.alive = value; } }
+	public bool Alive { get => state.alive; set => state.alive = value; }
 
-	public int PhysicalThreshold { get { return state.physicalThreshold; } set { state.physicalThreshold = value; } }
-	public int MentalThreshold { get { return state.mentalThreshold; } set { state.mentalThreshold = value; } }
-	public int DebtThreshold { get { return state.debtThreshold; } set { state.debtThreshold = value; } }
+	public int PhysicalThreshold { get => state.physicalThreshold; set => state.physicalThreshold = value; }
+	public int MentalThreshold { get => state.mentalThreshold; set => state.mentalThreshold = value; }
+	public int DebtThreshold { get => state.debtThreshold; set => state.debtThreshold = value; }
 
-	public bool GetLimitReached(CharacterStat stat) {
-		return state.GetLimitReached(stat);
+	public bool GetLimitReached(CharacterStat stat) => state.GetLimitReached(stat);
+
+	public List<CharacterStat> GetLimitsReached() => state.GetLimitsReached();
+
+	public int Initiative => Dexterity + Perception;
+
+	public CharacterData() { }
+
+	public CharacterData(CharacterData other) {
+		if (other != null) state = other.state;
+		traits = new List<string>(other.traits);
 	}
-
-	public List<CharacterStat> GetLimitsReached() {
-		return state.GetLimitsReached();
-	}
-
-	public int Initiative { get { return Dexterity + Perception; } }
 }
 
 [Serializable]
@@ -244,9 +242,17 @@ public struct CharacterState {
 				break;
 		}
 	}
+	/// <summary>
+	/// Applies the stat change to the character. If additive, the stat change is treated as a delta.
+	/// Otherwise, the value will overwrite the existing.
+	/// </summary>
+	/// <param name="statChange">Struct representing the change to make.</param>
 	public void ChangeStat(StatChange statChange) {
-		var value = GetStat(statChange.stat) + statChange.value;
-		SetStat(statChange.stat, value);
+		if (statChange.additive) {
+			var finalValue = GetStat(statChange.stat) + statChange.value;
+			SetStat(statChange.stat, finalValue);
+		}
+		else SetStat(statChange.stat, statChange.value);
 	}
 
 	public bool alive;
@@ -294,10 +300,19 @@ public struct CharacterState {
 public struct StatChange {
 	public CharacterStat stat;
 	public int value;
+	public bool additive;
+
+	public StatChange(CharacterStat stat, int value, bool additive) {
+		this.stat = stat;
+		this.value = value;
+		this.additive = additive;
+	}
 
 	public StatChange(CharacterStat stat, int value) {
 		this.stat = stat;
 		this.value = value;
+
+		additive = true;
 	}
 }
 

@@ -460,6 +460,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NarrationPanel01
       objectReference: {fileID: 0}
+    - target: {fileID: 114378579236460672, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: defaultNext
+      value: 
+      objectReference: {fileID: 5745186670444056163}
     - target: {fileID: 224647597307002798, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -565,11 +570,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114378579236460672, guid: d3d72052a446f34409272baf1e067bc2,
-        type: 3}
-      propertyPath: defaultNext
-      value: 
-      objectReference: {fileID: 5745186670444056163}
     - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: m_Text
@@ -715,6 +715,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: m_Text
+      value: But alas you were bested from your hubris, and got smashed.
+      objectReference: {fileID: 0}
     - target: {fileID: 114041508230488718, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: timeEvents.Array.data[0].onTrigger.m_PersistentCalls.m_Calls.Array.size
@@ -801,11 +806,6 @@ PrefabInstance:
       propertyPath: timeEvents.Array.data[0].onTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3956931740023735189}
-    - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
-        type: 3}
-      propertyPath: m_Text
-      value: But alas you were bested from your hubris, and got smashed.
-      objectReference: {fileID: 0}
     - target: {fileID: 114476390973526542, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: statChanges.Array.size
@@ -820,6 +820,11 @@ PrefabInstance:
         type: 3}
       propertyPath: statChanges.Array.data[0].value
       value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114476390973526542, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: statChanges.Array.data[0].delta
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d72052a446f34409272baf1e067bc2, type: 3}
@@ -868,6 +873,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114378579236460672, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: defaultNext
+      value: 
+      objectReference: {fileID: 3957129296367419295}
     - target: {fileID: 224647597307002798, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -973,16 +983,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114378579236460672, guid: d3d72052a446f34409272baf1e067bc2,
-        type: 3}
-      propertyPath: defaultNext
-      value: 
-      objectReference: {fileID: 3957129296367419295}
-    - target: {fileID: 114041508230488718, guid: d3d72052a446f34409272baf1e067bc2,
-        type: 3}
-      propertyPath: timeEvents.Array.data[0].triggerTime
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: m_Text
@@ -991,6 +991,11 @@ PrefabInstance:
         Why I thought the monster''s head would pop off.
 
         And all that with just a bobby pin...'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114041508230488718, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: timeEvents.Array.data[0].triggerTime
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d72052a446f34409272baf1e067bc2, type: 3}

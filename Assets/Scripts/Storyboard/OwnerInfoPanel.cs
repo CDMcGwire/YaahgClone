@@ -10,7 +10,7 @@ public class OwnerInfoPanel : MonoBehaviour {
 	/// <summary>Reference to the controlling menu component.</summary>
 	[SerializeField]
 	private Menu menu;
-	public Menu Menu { get { return menu; } }
+	public Menu Menu => menu;
 
 	/// <summary>
 	/// Reference to a game object with a text field. If all living players are
@@ -34,38 +34,38 @@ public class OwnerInfoPanel : MonoBehaviour {
 	[SerializeField]
 	private Color partyDisplayAccent = Color.white;
 
+	/// <summary>
+	/// A stack of dynamically spawned name displays which should be cleared when repopulated.
+	/// </summary>
+	private Stack<GameObject> dynamicDisplays = new Stack<GameObject>();
+
 	/// <summary>Setup all relevant display objects using the data passed in.</summary>
 	/// <param name="gameData">Container for relevant game data: characters, traits, etc.</param>
-	public void Initialize(GameData gameData) {
-		if (IsParty(gameData.Characters)) {
+	public void Initialize(List<int> owningPlayers) {
+		var characters = CharacterManager.GetPlayerCharacters(owningPlayers);
+
+		// Cleanup old displays
+		while (dynamicDisplays.Count > 0) Destroy(dynamicDisplays.Pop());
+
+		if (CharacterManager.IsParty(characters)) {
 			PopulateNameDisplay(nameDisplayObject, partyDisplayText, partyDisplayAccent);
 			nameDisplayObject.SetActive(true);
 		}
-		else if (gameData.Characters.Count == 1) {
-			var characterData = gameData.Characters[0].Data;
+		else if (characters.Count == 1) {
+			var characterData = characters[0].Data;
 			var displayText = characterData.Name + " the " + characterData.Title;
 			PopulateNameDisplay(nameDisplayObject, displayText, characterData.Color);
 			nameDisplayObject.SetActive(true);
 		}
 		else {
 			nameDisplayObject.SetActive(false);
-			foreach (var character in gameData.Characters) {
+			foreach (var character in characters) {
 				var display = Instantiate(nameDisplayObject, nameDisplayParent);
 				PopulateNameDisplay(display, character.Data.Firstname, character.Data.Color);
 				display.SetActive(true);
+				dynamicDisplays.Push(display);
 			}
 		}
-	}
-
-	/// <summary>Checks if the list of characters passed contains more than one character and all living characters.</summary>
-	/// <param name="owningCharacters">List of characters to display.</param>
-	/// <returns>True if the set of living characters contains all characters to display.</returns>
-	private bool IsParty(IList<Character> owningCharacters) {
-		if (owningCharacters.Count < 2) return false;
-		var owners = new HashSet<Character>(owningCharacters);
-		foreach (var character in CharacterManager.LivingCharacters)
-			if (!owners.Contains(character)) return false;
-		return true;
 	}
 
 	/// <summary>Attempts to set text and image components of the game objects passed in.</summary>

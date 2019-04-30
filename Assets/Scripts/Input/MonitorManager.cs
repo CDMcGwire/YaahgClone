@@ -21,18 +21,18 @@ public class MonitorManager : MonoBehaviour {
 
 	[SerializeField]
 	private bool paused = false;
-	public static bool Paused { get { return Instance.paused; } set { Instance.paused = value; } }
+	public static bool Paused { get => Instance.paused; set => Instance.paused = value; }
 
 	private LinkedList<InputMonitor> monitorList = new LinkedList<InputMonitor>();
 
 	public static void TakeControl(InputMonitor monitor) {
 		if (!Instance) return;
-		if (!Instance.monitorList.Contains(monitor)) Instance.StartCoroutine(Instance.AddOnNextFrame(monitor));
+		if (!Instance.monitorList.Contains(monitor)) _ = Instance.StartCoroutine(Instance.AddOnNextFrame(monitor));
 	}
 
 	public static void Release(InputMonitor monitor) {
 		if (!Instance) return;
-		Instance.StartCoroutine(Instance.RemoveOnNextFrame(monitor));
+		_ = Instance.StartCoroutine(Instance.RemoveOnNextFrame(monitor));
 	}
 
 	private void Start() {
@@ -52,11 +52,11 @@ public class MonitorManager : MonoBehaviour {
 
 	private IEnumerator AddOnNextFrame(InputMonitor monitor) {
 		yield return null;
-		monitorList.AddFirst(monitor);
+		_ = monitorList.AddFirst(monitor);
 	}
 
 	private IEnumerator RemoveOnNextFrame(InputMonitor monitor) {
 		yield return null;
-		monitorList.Remove(monitor);
+		_ = monitorList.Remove(monitor);
 	}
 }

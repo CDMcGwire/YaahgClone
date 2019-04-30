@@ -9,7 +9,7 @@ public class PlayerConfirmationWindow : MonoBehaviour {
 	[SerializeField]
 	private string displayText = "";
 	public string DisplayText {
-		get { return displayText; }
+		get => displayText;
 		set {
 			if (textElement != null) textElement.text = value;
 			displayText = value;
@@ -18,19 +18,19 @@ public class PlayerConfirmationWindow : MonoBehaviour {
 
 	[SerializeField]
 	private UnityEvent onSubmit = new UnityEvent();
-	public UnityEvent OnSubmit { get { return onSubmit; } }
+	public UnityEvent OnSubmit => onSubmit;
 
 	[SerializeField]
 	private UnityEvent onBack = new UnityEvent();
-	public UnityEvent OnBack { get { return onBack; } }
+	public UnityEvent OnBack => onBack;
 
 	[SerializeField]
 	public int PlayerNumber = -1;
 
-	private bool AnySubmit { get { return InputManager.GetButtonDownFromAny("Submit"); } }
-	private bool AnyBack { get { return InputManager.GetButtonDownFromAny("Back"); } }
-	private bool PlayerSubmit { get { return InputManager.GetPlayerButtonDown(PlayerNumber, "Submit"); } }
-	private bool PlayerBack { get { return InputManager.GetPlayerButtonDown(PlayerNumber, "Back"); } }
+	private bool AnySubmit => InputManager.GetButtonDownFromAny("Submit");
+	private bool AnyBack => InputManager.GetButtonDownFromAny("Back");
+	private bool PlayerSubmit => InputManager.GetPlayerButtonDown(PlayerNumber, "Submit");
+	private bool PlayerBack => InputManager.GetPlayerButtonDown(PlayerNumber, "Back");
 
 	private void OnValidate() {
 		if (textElement == null) textElement = GetComponentInChildren<Text>();

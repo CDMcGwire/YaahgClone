@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 3959645205
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bb55ac1a5d65e5c926246edd01e7bedd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb3f6df5cbc4a2990c44c2787bc9553a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Images/Prep/back-alleys.png
+- Assets/Images/Prep/city-backdrop.png
+- Assets/Images/Prep/tavern.png
+- Assets/Images/Prep/market.png
+- Assets/Images/Prep/field.png
+- Assets/Images/Prep/woods.png
+- Assets/Images/Prep/royal-court.png
+Dependencies: []

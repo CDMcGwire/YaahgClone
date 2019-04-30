@@ -20,44 +20,63 @@ public class Session : MonoBehaviour {
 	[Tooltip("A sort of history tracker for a given Session. Used to determine paths.")]
 	[SerializeField]
 	private List<string> traits = new List<string>();
-	public static List<string> Traits { get { return Current?.traits; } }
+	public static List<string> Traits => Current?.traits;
+
+	/// <summary>Adds the given trait to the Session if not already present.</summary>
+	/// <param name="trait">The trait identifier.</param>
+	public static void AddTrait(string trait) {
+		if (Current == null) return;
+		if (!Traits.Contains(trait)) Traits.Add(trait);
+	}
+
+	[Tooltip("Used to track history for the current Encounter. Cleared when it ends.")]
+	[SerializeField]
+	private List<string> encounterTraits = new List<string>();
+	public static List<string> EncounterTraits => Current.encounterTraits;
+
+	/// <summary>Adds the given trait to the current Encounter if not already present.</summary>
+	/// <param name="trait">The trait identifier.</param>
+	public static void AddEncounterTrait(string trait) {
+		if (Current == null) return;
+		if (!EncounterTraits.Contains(trait)) EncounterTraits.Add(trait);
+	}
 
 	[Tooltip("Trait added on all players dead.")]
 	[SerializeField]
 	private string partyWipeTrait = "Party Wipe";
-	public static string PartyWipeTrait { get { return Current.partyWipeTrait; } }
+	public static string PartyWipeTrait => Current.partyWipeTrait;
 
 	[Space(12)]
 
 	[Tooltip("How long the adventure should last in days.")]
 	[SerializeField]
 	private int adventureLength = 5;
-	public static int AdventureLength { get { return Current.adventureLength; } set { Current.adventureLength = value; } }
+	public static int AdventureLength { get => Current.adventureLength; set => Current.adventureLength = value; }
 
 	[Tooltip("Event that fires at the end of an Encounter.")]
 	[SerializeField]
 	private UnityEvent onEncounterEnd = new UnityEvent();
-	public static UnityEvent OnEncounterEnd { get { return Current.onEncounterEnd; } }
+	public static UnityEvent OnEncounterEnd => Current.onEncounterEnd;
 
 	[Tooltip("Event that fires at the end of a game day.")]
 	[SerializeField]
 	private UnityEvent onDayEnd = new UnityEvent();
-	public static UnityEvent OnDayEnd { get { return Current.onDayEnd; } }
+	public static UnityEvent OnDayEnd => Current.onDayEnd;
 
 	[Tooltip("Event that fires as the Session begins to end.")]
 	[SerializeField]
 	private UnityEvent onSessionCleanup = new UnityEvent();
-	public static UnityEvent OnSessionCleanup { get { return Current.onSessionCleanup; } }
+	public static UnityEvent OnSessionCleanup => Current.onSessionCleanup;
 
 	[Tooltip("Event that fires at the end of the Session.")]
 	[SerializeField]
 	private UnityEvent onSessionEnd = new UnityEvent();
-	public static UnityEvent OnSessionEnd { get { return Current.onSessionEnd; } }
+	public static UnityEvent OnSessionEnd => Current.onSessionEnd;
 
 	[Tooltip("Reference to an EncounterPicker object.")]
 	[SerializeField]
 	private EncounterPicker encounterPicker;
-	private static EncounterPicker EncounterPicker { get { return Current.encounterPicker; } }
+	private static EncounterPicker EncounterPicker => Current.encounterPicker;
 
 	[Space(12)]
 
@@ -75,19 +94,35 @@ public class Session : MonoBehaviour {
 	public static bool EncounterWasRun(string encounterName) { return Current.encounterChecklist.Contains(encounterName); }
 
 	/// <summary>The number of days that have completed in the current session.</summary>
-	public static int Day { get { return Current.day; } private set { Current.day = value; } }
+	public static int Day { get => Current.day; private set => Current.day = value; }
 	private int day = 1;
 
 	/// <summary>
 	/// The number of events that have completed on the current game day. Initializes to 0 to represent 
 	/// the setup encounter. 
 	/// </summary>
-	public static int CurrentEncounterNum { get { return Current.currentEncounterNum; } private set { Current.currentEncounterNum = value; } }
+	public static int CurrentEncounterNum { get => Current.currentEncounterNum; private set => Current.currentEncounterNum = value; }
 	private int currentEncounterNum = 0;
 
 	/// <summary>The total number of encounters that have been completed on a given day.</summary>
-	public static int TotalEncounters { get { return Current.totalEncounters; } private set { Current.totalEncounters = value; } }
+	public static int TotalEncounters { get => Current.totalEncounters; private set => Current.totalEncounters = value; }
 	private int totalEncounters = 0;
+
+	/// <summary>Given a set of players, make a GameData bundle with the required Session level data.</summary>
+	/// <param name="players">The players to retrieve the characters of and put in the bundle.</param>
+	/// <returns>A GameData bundle.</returns>
+	public static GameData BundleGameData(List<int> players) {
+		var characters = CharacterManager.GetPlayerCharacters(players);
+		return BundleGameData(characters);
+	}
+
+	/// <summary>Given a set of characters, make a GameData bundle with the required Session level data.</summary>
+	/// <param name="characters">The characters to put in the bundle.</param>
+	/// <returns>A GameData bundle.</returns>
+	public static GameData BundleGameData(List<Character> characters) {
+		if (Current == null) { return new GameData(characters, new List<string>(), new List<string>()); }
+		else return new GameData(characters, EncounterTraits, Traits);
+	}
 
 	private void Start() {
 		if (Current != this) {
@@ -120,29 +155,17 @@ public class Session : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Adds the given trait to the list of Session traits.</summary>
-	/// <param name="trait">Trait identifying string.</param>
-	public static void AddTrait(string trait) {
-		if (Current == null) return;
-		if (Traits.Contains(trait)) return;
-		Traits.Add(trait);
-	}
-
-	/// <param name="trait">Trait to lookup.</param>
-	/// <returns>True if found.</returns>
-	public static bool HasTrait(string trait) {
-		if (Current == null) return false;
-		return Traits.Contains(trait);
-	}
-
 	/// <summary>
 	/// Should be triggered when the Storyboard Queue clears. An encounter represents
 	/// a series of storyboards, as one may lead into several others. Not static to support
 	/// calls from a UnityEvent.
 	/// </summary>
 	public void EndEncounter() {
+		// Clear out the current encounter's traits.
+		EncounterTraits.Clear();
+
 		// Check if Session is set to end. If so, skip normal processing and trigger the final event.
-		if (sessionShouldEnd) {
+		if (sessionShouldEnd || adventureLength < 1) {
 			onSessionEnd.Invoke();
 			return;
 		}

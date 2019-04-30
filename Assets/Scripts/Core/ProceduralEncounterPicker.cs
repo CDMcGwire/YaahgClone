@@ -9,7 +9,7 @@ public class ProceduralEncounterPicker : EncounterPicker {
 	/// <summary>Reference to the scriptable object containing the data to pick from.</summary>
 	[SerializeField]
 	private SessionTheme sessionTheme;
-	public SessionTheme SessionTheme { get { return sessionTheme; } }
+	public SessionTheme SessionTheme => sessionTheme;
 
 	private int currentTier = 0;
 
@@ -58,21 +58,21 @@ public class ProceduralEncounterPicker : EncounterPicker {
 		var totalWeight = 0;
 		var availableEntries = new List<EncounterListing>();
 		foreach (var entry in weightedValues) {
-			if (entry.Value == null) {
+			if (entry.Uri == null) {
 				Debug.LogError("Procedural Encounter Picker \"" + sessionTheme.name + "\" has a missing storyboard value.");
 			}
 			// If the storyboard is not unique or has not been run, count it towards the available entries
-			else if (!entry.Value.Unique || !Session.EncounterWasRun(entry.Value.name)) {
-				totalWeight += entry.Weight;
-				availableEntries.Add(entry);
-			}
+			//else if (!entry.Uri.Unique || !Session.EncounterWasRun(entry.Uri.name)) {
+			//	totalWeight += entry.Weight;
+			//	availableEntries.Add(entry);
+			//}
 		}
 
 		// Choose one of the available entries to run
 		var target = Random.Range(0, totalWeight);
 		foreach (var entry in availableEntries) {
-			if (target < entry.Weight) return entry.Value;
-			else target -= entry.Weight;
+			//if (target < entry.Weight) return entry.Uri;
+			//else target -= entry.Weight;
 		}
 
 		// No entries available

@@ -725,6 +725,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Option 01 went very poorly and the giant smashed you.
+
+        Sad.'
+      objectReference: {fileID: 0}
     - target: {fileID: 114041508230488718, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: timeEvents.Array.data[0].onTrigger.m_PersistentCalls.m_Calls.Array.size
@@ -811,13 +818,6 @@ PrefabInstance:
       propertyPath: timeEvents.Array.data[0].resetOnEnable
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114223087968557304, guid: d3d72052a446f34409272baf1e067bc2,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Option 01 went very poorly and the giant smashed you.
-
-        Sad.'
-      objectReference: {fileID: 0}
     - target: {fileID: 114476390973526542, guid: d3d72052a446f34409272baf1e067bc2,
         type: 3}
       propertyPath: statChanges.Array.size
@@ -832,6 +832,11 @@ PrefabInstance:
         type: 3}
       propertyPath: statChanges.Array.data[0].value
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114476390973526542, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: statChanges.Array.data[0].delta
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d72052a446f34409272baf1e067bc2, type: 3}

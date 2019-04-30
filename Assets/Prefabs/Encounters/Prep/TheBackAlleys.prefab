@@ -121,11 +121,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 528599642317338781, guid: 572237e05e885ad48953087d25886583,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 173
-      objectReference: {fileID: 0}
     - target: {fileID: 4637182648143181584, guid: 572237e05e885ad48953087d25886583,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -150,6 +145,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 528599642317338781, guid: 572237e05e885ad48953087d25886583,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 6367917318044898633, guid: 572237e05e885ad48953087d25886583,
         type: 3}
@@ -244,7 +244,7 @@ PrefabInstance:
     - target: {fileID: 224631309104225840, guid: a214ea2000b339c49934dcd824e04b13,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 224631309104225840, guid: a214ea2000b339c49934dcd824e04b13,
         type: 3}
@@ -289,17 +289,48 @@ PrefabInstance:
     - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
         type: 3}
       propertyPath: decisions.Array.data[0].OptionText
-      value: Beating up bad guys
+      value: Vigilante work
       objectReference: {fileID: 0}
     - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
         type: 3}
       propertyPath: decisions.Array.data[1].OptionText
       value: Dealing drugs
       objectReference: {fileID: 0}
+    - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
+        type: 3}
+      propertyPath: choiceContext
+      value: 'You find yourself deep in the backstreets of town.
+
+        Filth lines the walkways and deteriorating walls.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
+        type: 3}
+      propertyPath: playerPromptFormat
+      value: '{0}, what are you doing here?'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
+        type: 3}
+      propertyPath: decisions.Array.data[1].StoryboardPrefab
+      value: 
+      objectReference: {fileID: 6091508244250683677, guid: 521bf351b7e27794c8224b534372e1dc,
+        type: 3}
+    - target: {fileID: 114741547441920716, guid: a214ea2000b339c49934dcd824e04b13,
+        type: 3}
+      propertyPath: decisions.Array.data[0].StoryboardPrefab
+      value: 
+      objectReference: {fileID: 6091508244250683677, guid: 37bb12f15bb8a1c48a73d7395b326b8b,
+        type: 3}
     - target: {fileID: 114388930616847596, guid: a214ea2000b339c49934dcd824e04b13,
         type: 3}
       propertyPath: m_Text
-      value: What are you doing in the back alley?
+      value: 'You find yourself deep in the backstreets of town.
+
+        Filth lines the walkways and deteriorating walls.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114048037472260080, guid: a214ea2000b339c49934dcd824e04b13,
+        type: 3}
+      propertyPath: m_Text
+      value: Johnathan, what are you doing here?
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a214ea2000b339c49934dcd824e04b13, type: 3}

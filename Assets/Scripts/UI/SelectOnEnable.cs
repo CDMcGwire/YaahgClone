@@ -11,7 +11,7 @@ public class SelectOnEnable : MonoBehaviour {
 
 	private void OnEnable() {
 		if (!TargetSelectable || !EventSystem.current) return;
-		StartCoroutine(SelectOnNextFrame());
+		_ = StartCoroutine(SelectOnNextFrame());
 	}
 
 	private void Select() {

@@ -1036,7 +1036,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1854401139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1247,6 +1247,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onSessionCleanup.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 315515709786377855, guid: 2da8e16a8a8d8fe45bbf92c984830099,
+        type: 3}
+      propertyPath: adventureLength
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2da8e16a8a8d8fe45bbf92c984830099, type: 3}

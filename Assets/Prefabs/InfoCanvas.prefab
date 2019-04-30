@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4114047981380384990}
   - component: {fileID: 4114047981380384997}
+  - component: {fileID: 6580521018501348253}
   - component: {fileID: 4114047981380384994}
   - component: {fileID: 4114047981380384995}
   - component: {fileID: 4114047981380384992}
   - component: {fileID: 4114047981380384993}
   m_Layer: 5
-  m_Name: StatUpdatePanel
+  m_Name: ContainerMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,6 +113,38 @@ MonoBehaviour:
   initialAnimationSpeed: 2.25
   animatorSpeedProperty: Speed
   animatorTrigger: Close
+--- !u!114 &6580521018501348253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114047981380384991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be52d3c2493f084ebf97bcbf5e54b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggers:
+  - Buttons:
+    - Submit
+    - Back
+    OnButton:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4114047982453015969}
+          m_MethodName: FastForward
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: ButtonEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
 --- !u!222 &4114047981380384994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1301,7 +1334,7 @@ GameObject:
   - component: {fileID: 4114047981796252278}
   - component: {fileID: 4114047981796252279}
   m_Layer: 5
-  m_Name: Stats
+  m_Name: StatFields
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2576,7 +2609,7 @@ GameObject:
   - component: {fileID: 4114047982453015966}
   - component: {fileID: 4114047982453015969}
   m_Layer: 5
-  m_Name: StatUpdater
+  m_Name: StatUpdateDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2614,11 +2647,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96eed0922c4ed01488e1a176bc133026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdTime: 1.5
+  updatesPerSecond: 4
+  fastForward: 0
   menu: {fileID: 4114047981380384997}
   nameDisplay: {fileID: 4114047982992217379}
   titleDisplay: {fileID: 4114047982513922491}
-  updatesPerSecond: 4
-  holdTime: 1.5
 --- !u!1 &4114047982513922489
 GameObject:
   m_ObjectHideFlags: 0

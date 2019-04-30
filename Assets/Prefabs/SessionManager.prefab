@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 315515709786377852}
   - component: {fileID: 315515709786377853}
   - component: {fileID: 315515709786377850}
+  - component: {fileID: 8128264322033610676}
+  - component: {fileID: 3478471529293165514}
   m_Layer: 0
   m_Name: SessionManager
   m_TagString: Untagged
@@ -47,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   traits: []
+  encounterTraits: []
   partyWipeTrait: Party Wipe
   adventureLength: 1
   onEncounterEnd:
@@ -55,6 +58,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onDayEnd:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSessionCleanup:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -77,8 +85,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   encounterPicker: {fileID: 315515709786377852}
   sessionShouldEnd: 0
-  sessionEndBoard: {fileID: 4528193572983258385, guid: 794616c298dcb9243bd777ebdedbf950,
-    type: 3}
+  sessionEndBoard: {fileID: 0}
 --- !u!114 &315515709786377852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,8 +127,8 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  genericDeathStoryboard: {fileID: 114781169257526358, guid: 9a10f422f1269be4d9a27b0602feb232,
-    type: 3}
+  defaultDriverBoard: {fileID: 0}
+  genericDeathStoryboard: {fileID: 0}
 --- !u!114 &315515709786377850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,3 +146,30 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &8128264322033610676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315515709786377840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673af9b44562e5946b3b3fddad751a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetLoader: {fileID: 0}
+--- !u!114 &3478471529293165514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315515709786377840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f49c55d1ec74ae40ba7fc9b01f07673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearOnDisable: 1
+  forceUnloadByDefault: 0

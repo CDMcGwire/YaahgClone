@@ -21,15 +21,15 @@ public class CharacterManager : MonoBehaviour {
 
 	[SerializeField]
 	private PlayerSpawnEvent onPlayerSpawned = new PlayerSpawnEvent();
-	public static PlayerSpawnEvent OnPlayerSpawned { get { return Instance.onPlayerSpawned; } }
+	public static PlayerSpawnEvent OnPlayerSpawned => Instance.onPlayerSpawned;
 	[SerializeField]
 	private PlayerSpawnEvent onPlayerRemoved = new PlayerSpawnEvent();
-	public static PlayerSpawnEvent OnPlayerRemoved { get { return Instance.onPlayerRemoved; } }
+	public static PlayerSpawnEvent OnPlayerRemoved => Instance.onPlayerRemoved;
 
 	[SerializeField]
 	private List<Character> characters = new List<Character>();
 	/// <summary>Returns a list of all characters.</summary>
-	public static List<Character> Characters { get { return Instance.characters; } }
+	public static List<Character> Characters => Instance.characters;
 	/// <summary>Creates a new list containing all currently living characters.</summary>
 	public static List<Character> LivingCharacters {
 		get {
@@ -72,7 +72,8 @@ public class CharacterManager : MonoBehaviour {
 	/// <param name="player">Roster index of the player to attempt to retrieve.</param>
 	/// <returns>The matching player's Character, if it exists.</returns>
 	public static Character GetCharacter(int player) {
-		if (player < 0 || player >= Instance.characters.Count) return null;
+		if (player < 0 || Instance?.characters == null || player >= Instance.characters.Count)
+			return null;
 		return Instance.characters[player];
 	}
 
@@ -156,7 +157,18 @@ public class CharacterManager : MonoBehaviour {
 		return character;
 	}
 
-	private void Start() {
+	/// <summary>Checks if the list of characters passed contains more than one character and all living characters.</summary>
+	/// <param name="owningCharacters">List of characters to display.</param>
+	/// <returns>True if the set of living characters contains all characters to display.</returns>
+	public static bool IsParty(IList<Character> owningCharacters) {
+		if (owningCharacters.Count < 2) return false;
+		var owners = new HashSet<Character>(owningCharacters);
+		foreach (var character in LivingCharacters)
+			if (!owners.Contains(character)) return false;
+		return true;
+	}
+
+	public void Start() {
 		if (Instance != this) {
 			Destroy(gameObject);
 			return;

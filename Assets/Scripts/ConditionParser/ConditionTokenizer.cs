@@ -10,11 +10,14 @@ public static class ConditionTokenizer {
 			{ "and", new BoolToken(BoolToken.Type.AND) },
 			{ "or", new BoolToken(BoolToken.Type.OR) },
 			{ "character", new TargetToken(TargetToken.Type.CHAR) },
+			{ "party", new TargetToken(TargetToken.Type.PARTY) },
 			{ "storyboard", new TargetToken(TargetToken.Type.STORY) },
+			{ "encounter", new TargetToken(TargetToken.Type.ENC) },
 			{ "session", new TargetToken(TargetToken.Type.SESS) },
 			{ "has", new HasToken() },
 			{ "not", new NotToken() },
 			{ "trait", new TraitToken() },
+			{ "traits", new TraitsToken() },
 			{ "strength", new StatToken(CharacterStat.STR) },
 			{ "str", new StatToken(CharacterStat.STR) },
 			{ "toughness", new StatToken(CharacterStat.TUF) },
@@ -160,11 +163,21 @@ public static class ConditionTokenizer {
 				bool inverse = next is NotToken;
 				if (inverse) next = tokens.Dequeue();
 
-				if (!(next is TraitToken)) throw new LexingException("Found a trait phrase, but it did not contain the trait phrase after a 'has' or 'not'");
-				next = tokens.Dequeue();
-				if (!(next is StringToken)) throw new LexingException("Found a trait phrase, but it did not end with a string value");
-
-				output.Add(new TraitPhrase(inverse, next as StringToken));
+				// If the next token is 'trait' build a trait phrase with only the next string tokens
+				if (next is TraitToken) {
+					next = tokens.Dequeue();
+					if (!(next is StringToken)) throw new LexingException("Found a trait phrase, but it did not end with a string value");
+					output.Add(new TraitPhrase(inverse, next as StringToken));
+				}
+				// If the next token is 'traits' build a trait phrase from a list of string tokens
+				else if (next is TraitsToken) {
+					var traits = new List<StringToken>();
+					while (tokens.Peek() is StringToken) traits.Add(tokens.Dequeue() as StringToken);
+					if (traits.Count < 1) throw new LexingException("'traits' keyword was not followed by a space delimited list of string values.");
+					output.Add(new TraitPhrase(inverse, traits));
+				}
+				// Otherwise the syntax is invalid
+				else throw new LexingException("Found a trait phrase, but it did not contain the keyword 'trait' or 'traits' after a 'has' or 'not'");
 			}
 			else {
 				output.Add(next);
@@ -212,7 +225,8 @@ public class ComparisonToken : Token {
 	public ComparisonToken(Type type) { value = type; }
 }
 public class TargetToken : Token {
-	public enum Type { CHAR, STORY, SESS };
+	// Character, Storyboard, Session, Party, Encounter
+	public enum Type { CHAR, STORY, SESS, PARTY, ENC };
 	public readonly Type value;
 	public TargetToken(Type type) { value = type; }
 }
@@ -222,6 +236,7 @@ public class CommaToken : Token { }
 public class HasToken : Token { }
 public class NotToken : Token { }
 public class TraitToken : Token { }
+public class TraitsToken : Token { }
 
 // Phrases (Meta tokens)
 public abstract class Phrase : Token { }
@@ -238,11 +253,17 @@ public class StatPhrase : Phrase {
 }
 public class TraitPhrase : Phrase {
 	public readonly bool inverse;
-	public readonly string trait;
-
+	public readonly List<string> traits;
+	
+	public TraitPhrase(bool inverse, List<StringToken> traits) {
+		this.inverse = inverse;
+		this.traits = new List<string>(traits.Count);
+		for (var i = 0; i < traits.Count; i++) this.traits[i] = traits[i].value;
+	}
+	
 	public TraitPhrase(bool inverse, StringToken trait) {
 		this.inverse = inverse;
-		this.trait = trait.value;
+		traits = new List<string> { trait.value };
 	}
 }
 #endregion Token Definitions

@@ -6,17 +6,17 @@ using UnityEngine;
 public class GameData {
 	[SerializeField]
 	private List<Character> characters = new List<Character>();
-	public List<Character> Characters { get { return characters; } }
+	public List<Character> Characters => characters;
 	[SerializeField]
-	private List<string> storyboardTraits = new List<string>();
-	public List<string> StoryboardTraits { get { return storyboardTraits; } }
+	private List<string> encounterTraits = new List<string>();
+	public List<string> EncounterTraits => encounterTraits;
 	[SerializeField]
 	private List<string> sessionTraits = new List<string>();
-	public List<string> SessionTraits { get { return sessionTraits; } }
-	
-	public GameData(List<Character> characters, List<string> storyboardTraits, List<string> sessionTraits) {
+	public List<string> SessionTraits => sessionTraits;
+
+	public GameData(List<Character> characters, List<string> encounterTraits, List<string> sessionTraits) {
 		this.characters = characters ?? new List<Character>();
-		this.storyboardTraits = storyboardTraits ?? new List<string>();
+		this.encounterTraits = encounterTraits ?? new List<string>();
 		this.sessionTraits = sessionTraits ?? new List<string>();
 	}
 }

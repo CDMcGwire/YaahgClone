@@ -13,7 +13,7 @@ public class PlayerJoinMonitor : InputMonitor {
 
 	[SerializeField]
 	private bool seekingInput = false;
-	public bool SeekingInput { get { return seekingInput; } set { seekingInput = value; } }
+	public bool SeekingInput { get => seekingInput; set => seekingInput = value; }
 
 	private HashSet<string> controllers;
 	private Dictionary<string, List<string>> controllerButtons;

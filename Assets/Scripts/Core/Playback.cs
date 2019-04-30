@@ -12,11 +12,14 @@ public class Playback : MonoBehaviour {
 
 	/// <summary>Set of objects requesting a pause.</summary>
 	private HashSet<string> pauseRequests = new HashSet<string>();
-	private static HashSet<string> PauseRequests { get { return Instance.pauseRequests; } }
+	private static HashSet<string> PauseRequests => Instance.pauseRequests;
 
 	/// <summary>The time scale value when initially paused.</summary>
 	private float originalTimeScale = 1.0f;
-	private static float OriginalTimeScale { get { return Instance.originalTimeScale; } set { Instance.originalTimeScale = value; } }
+	private static float OriginalTimeScale { get => Instance.originalTimeScale; set => Instance.originalTimeScale = value; }
+
+	/// <summary>True if Gametime Playback is paused.</summary>
+	public static bool Paused => Instance == null ? false : Instance.pauseRequests.Count > 0;
 
 	/// <summary>
 	/// Issues a request to pause gameplay via the TimeScale global property. As long as
