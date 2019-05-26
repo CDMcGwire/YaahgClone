@@ -43,7 +43,7 @@ public class StoryboardLoader : MonoBehaviour {
 			return;
 		}
 		// Load storyboard data, cache, and give callback
-		StartCoroutine(assetLoader.LoadAsync<TextAsset>(
+		_ = StartCoroutine(assetLoader.LoadAsync<TextAsset>(
 			path,
 			textAsset => {
 				if (textAsset == null) return;
@@ -60,7 +60,5 @@ public class StoryboardLoader : MonoBehaviour {
 	/// </summary>
 	/// <param name="path">The path to the required storyboard of pattern {asset-bundle}/{storyboard-prefab}</param>
 	/// <param name="onLoaded">Callback to Invoke when loaded.</param>
-	public void LoadPrefab(string path, UnityAction<Storyboard> onLoaded) {
-		StartCoroutine(assetLoader.LoadAsync(path, onLoaded));
-	}
+	public void LoadPrefab(string path, UnityAction<Storyboard> onLoaded) => _ = StartCoroutine(assetLoader.LoadAsync(path, onLoaded));
 }

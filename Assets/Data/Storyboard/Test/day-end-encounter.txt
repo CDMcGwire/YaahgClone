@@ -1,0 +1,5 @@
+>>
+& backdrop=storyboard/test/placeholder
+| The day has ended and you're still alive.
+| God bless.
+| Goodnight.

@@ -17,72 +17,54 @@ MonoBehaviour:
     numberOfEncounters: 3
     encounterPool:
     - weight: 1
-      value: {fileID: 282775730348985877, guid: afbd81f1218ebbb4ca50a4f29fc5a9e6,
-        type: 3}
+      uri: data:storyboard/test/encounter-1-1
     - weight: 2
-      value: {fileID: 282775730348985877, guid: 884a7df63a862ad42b666387296f4e21,
-        type: 3}
+      uri: data:storyboard/test/encounter-1-2
     dayEndEncounters:
     - weight: 1
-      value: {fileID: 282775730348985877, guid: 1f04172b9cd84d54eb1bfcb702b12eac,
-        type: 3}
-  - rank: 2
+      uri: data:storyboard/test/day-end-encounter
+  - rank: 1
     numberOfEncounters: 3
     encounterPool:
     - weight: 3
-      value: {fileID: 282775730348985877, guid: 9fec162f47ac35b46a4d488de9106fba,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-1
     - weight: 5
-      value: {fileID: 282775730348985877, guid: 499538fd38ec42c43b1af4033e604f5b,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-2
     - weight: 4
-      value: {fileID: 282775730348985877, guid: b50128c9f4b08474cb1d6479d811124d,
-        type: 3}
-    - weight: 1
-      value: {fileID: 282775730348985877, guid: afbd81f1218ebbb4ca50a4f29fc5a9e6,
-        type: 3}
-    - weight: 1
-      value: {fileID: 282775730348985877, guid: 884a7df63a862ad42b666387296f4e21,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-3
+    - weight: 4
+      uri: data:storyboard/test/encounter-1-1
+    - weight: 4
+      uri: data:storyboard/test/encounter-1-2
     dayEndEncounters:
     - weight: 1
-      value: {fileID: 282775730348985877, guid: 1f04172b9cd84d54eb1bfcb702b12eac,
-        type: 3}
+      uri: data:storyboard/test/day-end-encounter
   - rank: 4
     numberOfEncounters: 3
     encounterPool:
     - weight: 5
-      value: {fileID: 282775730348985877, guid: 49c18286f79fe9c47af2b45a60010bb0,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-1
     - weight: 5
-      value: {fileID: 282775730348985877, guid: ec9245cc41e9f5c41b0691582ced43e7,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-2
     - weight: 5
-      value: {fileID: 282775730348985877, guid: 861360deb26020440a7a53bfe61323d2,
-        type: 3}
+      uri: data:storyboard/test/encounter-2-3
     - weight: 2
-      value: {fileID: 282775730348985877, guid: 9fec162f47ac35b46a4d488de9106fba,
-        type: 3}
+      uri: data:storyboard/test/encounter-3-1
     - weight: 1
-      value: {fileID: 282775730348985877, guid: 499538fd38ec42c43b1af4033e604f5b,
-        type: 3}
+      uri: data:storyboard/test/encounter-3-2
     - weight: 1
-      value: {fileID: 282775730348985877, guid: b50128c9f4b08474cb1d6479d811124d,
-        type: 3}
+      uri: data:storyboard/test/encounter-3-3
     dayEndEncounters:
     - weight: 1
-      value: {fileID: 282775730348985877, guid: 1f04172b9cd84d54eb1bfcb702b12eac,
-        type: 3}
+      uri: data:storyboard/test/day-end-encounter
     - weight: 10
-      value: {fileID: 282775730348985877, guid: 3f30020068107e14ea544077c9240963,
-        type: 3}
+      uri: data:storyboard/test/secret-day-end-encounter
   finalDayTiers:
   - rank: 0
     numberOfEncounters: 2
     encounterPool:
     - weight: 1
-      value: {fileID: 0}
+      uri: data:storyboard/test/final-encounter
     dayEndEncounters:
     - weight: 1
-      value: {fileID: 282775730348985877, guid: 501964a879337f044986830e815f4eb8,
-        type: 3}
+      uri: data:storyboard/test/encounter-1-1

@@ -10,16 +10,6 @@ using UnityEngine.Events;
 public abstract class Storyboard : MonoBehaviour {
 	public UnityEvent OnBoardFinished = new UnityEvent();
 
-	[Tooltip("Identifier string for determining matching storyboards.")]
-	[SerializeField]
-	private string id = "Default";
-	public string ID { get => id; set => id = value; }
-
-	[Tooltip("If true, the storyboard should not be repeated in a session.")]
-	[SerializeField]
-	private bool unique = true;
-	public bool Unique => unique;
-
 	[Tooltip("The list of players that this storyboard pertains to.")]
 	[SerializeField]
 	private List<int> owningPlayers = new List<int>();
@@ -44,6 +34,16 @@ public abstract class Storyboard : MonoBehaviour {
 	[SerializeField]
 	private OwnerInfoPanel ownerInfoMenu;
 	public OwnerInfoPanel OwnerInfoMenu => ownerInfoMenu;
+
+	/// <summary>
+	/// The string value to use to identify what encounter this storyboard belongs to.
+	/// </summary>
+	public abstract string ID { get; }
+
+	/// <summary>
+	/// Indicates if this storyboard should be treated as unique by other systems.
+	/// </summary>
+	public abstract bool Unique { get; }
 
 	/// <summary>
 	/// A package containing references to the storyboard's owning characters and traits, 

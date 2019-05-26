@@ -1,0 +1,4 @@
+>>
+& backdrop=storyboard/test/placeholder
+| This is encounter 1-2
+| Still nothing interesting

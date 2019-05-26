@@ -1,0 +1,10 @@
+>>
+& backdrop=storyboard/test/simple-background
+| This is the climactic final encounter!
+
+| I wonder what will happen!
+
+| ...
+
+| You died.
+: tuf-50

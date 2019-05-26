@@ -88,10 +88,29 @@ public class Session : MonoBehaviour {
 	[SerializeField]
 	private Storyboard sessionEndBoard;
 
-	/// <summary>Tracks which storyboards have run, so Unique ones can be ignored.</summary>
-	private HashSet<string> encounterChecklist = new HashSet<string>();
-	public static void CheckOffEncounter(string encounterName) { Current.encounterChecklist.Add(encounterName); }
-	public static bool EncounterWasRun(string encounterName) { return Current.encounterChecklist.Contains(encounterName); }
+	/* Design Note:	The encounter checklist is written to allow systems to check the uniqueness of what
+	 *						has been run without having to load a reference to the storyboard itself. It would be
+	 *						inefficient to load a storyboard to check if the storyboard should be used. However,
+	 *						to avoid the additional maintenence of defining uniqueness in an external data source,
+	 *						uniqueness is defined in the storyboard data. So we take advantage of the fact that
+	 *						this information is only needed after the first load.
+	 */
+
+	/// <summary>Tracks which storyboards have run and whether or not they are unique.</summary>
+	private Dictionary<string, bool> encounterChecklist = new Dictionary<string, bool>();
+	/// <summary>Reference to the active instance of the checklist that tracks which storyboards have run and whether or not they are unique.</summary>
+	private static Dictionary<string, bool> EncounterChecklist => Current.encounterChecklist;
+	/// <summary>Check off an encounter as "run" and optionally specify if it is unique.</summary>
+	/// <param name="encounterName">The identifying name of the encounter.</param>
+	/// <param name="unique">Whether or not this storyboard was unique.</param>
+	public static void CheckOffEncounter(string encounterName, bool unique = false) => EncounterChecklist[encounterName] = unique;
+	/// <summary>Checks if the given encounter was run and whether or not it was unique.</summary>
+	/// <param name="encounterName">The identifying name of the encounter.</param>
+	/// <returns>A bool pair where the first indicates whether the encounter was run and the second whether or not it was unique.</returns>
+	public static (bool, bool) EncounterWasRun(string encounterName) => 
+		EncounterChecklist.ContainsKey(encounterName) 
+		? (true, EncounterChecklist[encounterName]) 
+		: (false, false);
 
 	/// <summary>The number of days that have completed in the current session.</summary>
 	public static int Day { get => Current.day; private set => Current.day = value; }
@@ -176,9 +195,9 @@ public class Session : MonoBehaviour {
 		totalEncounters++;
 
 		// If the picker continues to return encounters, continue the session
-		var nextEncounter = EncounterPicker.Next;
+		var nextEncounter = EncounterPicker.Next();
 		if (nextEncounter != null) {
-			CheckOffEncounter(nextEncounter.name);
+			CheckOffEncounter(nextEncounter);
 			StoryboardQueue.Enqueue(nextEncounter);
 		}
 		// Otherwise prepare to end

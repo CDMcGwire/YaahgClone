@@ -1,16 +1,21 @@
 ManifestFileVersion: 0
-CRC: 2111454173
+CRC: 2219470491
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8e293b4da2c774e5dafc71c3385d462c
+    Hash: 5482d20bc86370d6f4bd3298630de037
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+    Hash: 698dfcf42eb4ed46a40f1a741f534e02
 HashAppended: 0
 ClassTypes:
 - Class: 49
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4149b6dce38976845baa242f606ab191, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 Assets:
+- Assets/Data/Themes/test-session.asset
 - Assets/Data/Storyboard/Test/test-storyboards.txt
 Dependencies: []

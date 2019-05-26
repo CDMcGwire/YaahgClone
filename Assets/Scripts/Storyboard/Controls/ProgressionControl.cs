@@ -43,6 +43,7 @@ public class ProgressionControl : PanelControl {
 	/// <summary>Update the list of effects that should be applied.</summary>
 	/// <param name="narrativeEffect">Struct containing the new set of effects to apply.</param>
 	public void Set(NarrativeEffect narrativeEffect) {
+		applied = false;
 		statChanges = narrativeEffect.statChanges ?? new List<StatChange>();
 		traits = narrativeEffect.characterTraits ?? new List<string>();
 		encounterTraits = narrativeEffect.encounterTraits ?? new List<string>();

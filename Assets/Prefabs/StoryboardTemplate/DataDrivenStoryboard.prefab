@@ -136,8 +136,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  id: DataDrivenBoard
-  unique: 0
   owningPlayers: 
   removeDeadPlayers: 1
   menu: {fileID: 7380025146321089488}
@@ -445,22 +443,22 @@ PrefabInstance:
     - target: {fileID: 1066892655642686575, guid: 8413264d6744c9f4f9a7c41bc99fb9d4,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1066892655642686575, guid: 8413264d6744c9f4f9a7c41bc99fb9d4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1066892655642686575, guid: 8413264d6744c9f4f9a7c41bc99fb9d4,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1066892655642686575, guid: 8413264d6744c9f4f9a7c41bc99fb9d4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -41.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1066892655642686575, guid: 8413264d6744c9f4f9a7c41bc99fb9d4,
         type: 3}
@@ -603,6 +601,41 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5128401971164582663}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Apply
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072343848789392, guid: d3d72052a446f34409272baf1e067bc2,
+        type: 3}
+      propertyPath: OnOpened.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d72052a446f34409272baf1e067bc2, type: 3}
 --- !u!224 &5017878653747871399 stripped
@@ -621,6 +654,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 462bb37eb344764499088ccf651e9216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5128401971164582663 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114476390973526542, guid: d3d72052a446f34409272baf1e067bc2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5097245471932989705}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bdc540f5abc0ae4ea553901d15f7170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7481295014293452570
@@ -766,6 +811,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7454018551719237935}
     m_Modifications:
+    - target: {fileID: 1852073543037148, guid: de03d1176bac3b04098824d59851eda8, type: 3}
+      propertyPath: m_Name
+      value: BranchPanel
+      objectReference: {fileID: 0}
     - target: {fileID: 224647597307002798, guid: de03d1176bac3b04098824d59851eda8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -870,10 +919,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1852073543037148, guid: de03d1176bac3b04098824d59851eda8, type: 3}
-      propertyPath: m_Name
-      value: BranchPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de03d1176bac3b04098824d59851eda8, type: 3}

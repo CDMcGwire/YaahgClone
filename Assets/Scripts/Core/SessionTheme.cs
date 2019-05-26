@@ -51,11 +51,12 @@ public class EncounterTier {
 /// <summary>Mini-class for getting randomly selected storyboards.</summary>
 [Serializable]
 public class EncounterListing {
-	/// <summary>The relative weighting of the entry.</summary>
+	[Tooltip("The relative weighting of the entry.")]
 	[SerializeField]
 	private int weight = 1;
 	public int Weight => weight;
-	/// <summary>The value stored within this entry.</summary>
+
+	[Tooltip("The value stored within this entry.")]
 	[SerializeField]
 	private string uri;
 	public string Uri => uri;

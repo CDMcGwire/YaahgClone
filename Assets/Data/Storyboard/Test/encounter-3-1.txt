@@ -1,0 +1,4 @@
+>>
+& backdrop=storyboard/test/placeholder
+| This is encounter 3-1
+| Things might heat up here at some point.

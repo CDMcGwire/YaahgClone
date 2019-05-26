@@ -9,10 +9,14 @@ using UnityEngine.UI;
 /// </summary>
 [RequireComponent(typeof(CachedAssetLoader))]
 public class DataDrivenBoard : Storyboard {
-	private const string PropBackdrop = "backdrop";
-	private const string PropMerge = "merge";
-	private const string PropInterrupt = "interrupt";
-	private const string PropPartySplit = "can-split-party";
+	private class Property {
+		public const string Backdrop = "backdrop";
+		public const string ID = "id";
+		public const string Interrupt = "interrupt";
+		public const string Merge = "merge";
+		public const string Split = "can-split-party";
+		public const string Unique = "unique";
+	}
 
 	/// <summary>The data from which to pull when running the storyboard.</summary>
 	public StoryboardData StoryboardData { get; set; }
@@ -47,6 +51,19 @@ public class DataDrivenBoard : Storyboard {
 	[HideInInspector]
 	private CachedAssetLoader assetLoader;
 
+	/// <summary>
+	/// The string value to use to identify what encounter this storyboard belongs to.
+	/// </summary>
+	public override string ID => StoryboardData?.Properties?.GetOrDefault(Property.ID, "Default");
+
+	/// <summary>
+	/// Indicates if this storyboard should be treated as unique by other systems.
+	/// </summary>
+	public override bool Unique => bool.TryParse(
+			StoryboardData?.Properties?.GetOrDefault(Property.Unique, "false"), 
+			out bool unique
+		) ? unique : false;
+
 	/// <summary>The index of the next panel to pull.</summary>
 	private int currentPanel = 0;
 
@@ -73,7 +90,7 @@ public class DataDrivenBoard : Storyboard {
 	/// <summary>Populate panel-by-panel properties that are shared by all panel types.</summary>
 	/// <param name="panelInfo">Data to populate from.</param>
 	private void PopulateCommonProperties(PanelInfo panelInfo) {
-		if (panelInfo.Properties.ContainsKey(PropBackdrop)) SetBackdrop(panelInfo.Properties[PropBackdrop]);
+		if (panelInfo.Properties.ContainsKey(Property.Backdrop)) SetBackdrop(panelInfo.Properties[Property.Backdrop]);
 	}
 
 	/// <summary>Determine the panel to use and populate it for playback.</summary>
@@ -106,16 +123,16 @@ public class DataDrivenBoard : Storyboard {
 	/// <param name="panelInfo">Data needed for a decision panel.</param>
 	private void PopulateDecisionPanel(DecisionPanelInfo panelInfo) {
 		// Get relevant properties
-		var mergeProp = panelInfo.Properties.ContainsKey(PropMerge) ? panelInfo.Properties[PropMerge] : "true";
+		var mergeProp = panelInfo.Properties.GetOrDefault(Property.Merge, "true");
 		_ = bool.TryParse(mergeProp, out bool merge);
-		var interruptProp = panelInfo.Properties.ContainsKey(PropInterrupt) ? panelInfo.Properties[PropInterrupt] : "false";
+		var interruptProp = panelInfo.Properties.GetOrDefault(Property.Interrupt, "false");
 		_ = bool.TryParse(interruptProp, out bool interrupt);
 
 		// Clear out existing options.
 		decisionPanel.Control.Decisions.Clear();
 		foreach (var decisionData in panelInfo.Decisions) {
 			// Create a concrete panel decision from the given data.
-			var branch = new Branch (
+			var branch = new Branch(
 				decisionData.order,
 				players => StoryboardQueue.Enqueue(decisionData.next, players, interrupt, merge)
 			);
@@ -133,11 +150,11 @@ public class DataDrivenBoard : Storyboard {
 	/// <param name="panelInfo">Data needed for a branch panel.</param>
 	private void PopulateBranchPanel(BranchPanelInfo panelInfo) {
 		// Get relevant properties
-		var mergeProp = panelInfo.Properties.ContainsKey(PropMerge) ? panelInfo.Properties[PropMerge] : "true";
+		var mergeProp = panelInfo.Properties.GetOrDefault(Property.Merge, "true");
 		_ = bool.TryParse(mergeProp, out bool merge);
-		var interruptProp = panelInfo.Properties.ContainsKey(PropInterrupt) ? panelInfo.Properties[PropInterrupt] : "false";
+		var interruptProp = panelInfo.Properties.GetOrDefault(Property.Interrupt, "false");
 		_ = bool.TryParse(interruptProp, out bool interrupt);
-		var splitProp = panelInfo.Properties.ContainsKey(PropPartySplit) ? panelInfo.Properties[PropPartySplit] : "true";
+		var splitProp = panelInfo.Properties.GetOrDefault(Property.Split, "true");
 		_ = bool.TryParse(splitProp, out bool canSplitParty);
 
 		var conditionalBranches = new List<ConditionalBranch>();

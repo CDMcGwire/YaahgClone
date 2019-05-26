@@ -7,10 +7,17 @@ using UnityEngine;
 /// itself, and continuing on from Path components on each panel.
 /// </summary>
 public class CustomStoryboard : Storyboard {
-	/// <summary>Initial path node that determines the start of the storyboard.</summary>
+	public override string ID => name;
+
+	[Tooltip("Initial path node that determines the start of the storyboard.")]
 	[SerializeField]
 	private List<Panel> panels;
 	protected override List<Panel> Panels => panels;
+
+	[Tooltip("Should this storyboard only be played once?")]
+	[SerializeField]
+	private bool unique = false;
+	public override bool Unique => unique;
 
 	private int currentPanel = 0;
 

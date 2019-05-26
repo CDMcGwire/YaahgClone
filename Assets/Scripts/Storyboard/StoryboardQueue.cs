@@ -117,7 +117,7 @@ public class StoryboardQueue : MonoBehaviour {
 	/// <param name="storyboardPrefab">The prefab to queue for instantiation.</param>
 	/// <param name="owningPlayer">The roster index number of the player that should own the board.</param>
 	/// <param name="interrupt">Whether or not the storyboard should take precedence over any others.</param>
-	public static void Enqueue(Storyboard storyboardPrefab, int owningPlayer, bool interrupt = false, bool merge = true) => 
+	public static void Enqueue(Storyboard storyboardPrefab, int owningPlayer, bool interrupt = false, bool merge = true) =>
 		Enqueue(storyboardPrefab, new List<int> { owningPlayer }, interrupt, merge);
 
 	/// <summary>Enqueue the storyboard with all living players by default. If there are none, it will just grab all players.</summary>
