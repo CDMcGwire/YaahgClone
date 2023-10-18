@@ -7,7 +7,7 @@ An attempt to make a multiplayer visual novel in the style of the [_“The Yawhg
 > 2022 Commentary
 >
 > This project ended up turning into an exercize in dynamic content management
-> scripting language design.
+> and scripting language design.
 >
 > The greatest shortcoming I saw with _The Yawhg_ is that there will be no
 > more content for it, likely ever. So, I looked into how to set up the project
